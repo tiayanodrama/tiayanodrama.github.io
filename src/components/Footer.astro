@@ -1,0 +1,18 @@
+---
+const year = new Date().getFullYear()
+---
+<footer class="ft">
+  <div class="ft-inner">
+    <span class="mono">© {year} 张甜湉 · 财务管理硕士 / AI 内容方向</span>
+    <span class="ft-links mono">
+      <a href="mailto:zhangtiantianxyt@163.com">EMAIL</a>
+      <a href="https://github.com/tiayanodrama">GITHUB</a>
+    </span>
+  </div>
+</footer>
+<style>
+.ft{margin-top:60px;border-top:1px solid var(--rule);padding:22px 28px;background:rgba(15,10,22,.5)}
+.ft-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--ink-light);max-width:1100px;margin:0 auto}
+.ft-links a{margin-left:16px;color:var(--ink-soft)}
+.ft-links a:hover{color:var(--pink-soft)}
+</style>

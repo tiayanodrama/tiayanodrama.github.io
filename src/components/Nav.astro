@@ -1,0 +1,25 @@
+---
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/about', label: '关于我' },
+  { href: '/works', label: '作品' },
+  { href: '/method', label: 'AI协作方法论' },
+  { href: '/contact', label: '联系' },
+]
+---
+<header class="nav">
+  <a class="brand" href="/"><span class="brand-mark">TT</span><span class="brand-name">张甜湉</span></a>
+  <nav class="nav-links">
+    {links.map(l => <a href={l.href}>{l.label}</a>)}
+  </nav>
+</header>
+<style>
+.nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(15,10,22,.72);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.brand{display:flex;align-items:baseline;gap:8px}
+.brand-mark{font-family:'Space Mono',monospace;font-weight:700;font-size:22px;color:var(--pink);letter-spacing:-1px}
+.brand-name{font-family:'ZCOOL KuaiLe',cursive;font-size:16px;color:var(--ink)}
+.nav-links{display:flex;gap:22px}
+.nav-links a{font-size:13.5px;color:var(--ink-soft);transition:color .2s}
+.nav-links a:hover{color:var(--pink-soft)}
+@media(max-width:640px){.nav-links{gap:14px;font-size:12px}.brand-name{display:none}}
+</style>

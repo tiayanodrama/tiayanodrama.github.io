@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro'
+---
+<Layout title="张甜湉 · 个人站">
+  <section class="hero">
+    <div class="hero-avatar">
+      <img src="/images/tt-anime.png" alt="张甜湉" />
+    </div>
+    <p class="hero-kicker mono">ZHANG TIANTIAN · PORTFOLIO</p>
+    <h1 class="hero-name">张甜湉</h1>
+    <p class="hero-tag">财务管理硕士 · AI 内容方向</p>
+    <p class="hero-line">财务的严谨 <span class="x">×</span> AI 的杠杆</p>
+    <p class="hero-sub">把模糊的岗位需求讲清楚，把人的材料呈现做对。</p>
+    <div class="hero-cta">
+      <a class="btn btn-pink" href="/about">了解我 →</a>
+      <a class="btn btn-ghost" href="/works">看作品</a>
+    </div>
+  </section>
+</Layout>
+<style>
+.hero{max-width:760px;margin:80px auto;padding:0 24px;text-align:center}
+.hero-avatar{width:120px;height:120px;border-radius:50%;margin:0 auto 22px;overflow:hidden;border:1px solid var(--rule-2);padding:4px;box-shadow:0 0 30px rgba(255,77,141,.25)}
+.hero-avatar img{width:100%;height:100%;object-fit:cover;object-position:center 32%;border-radius:50%;display:block}
+.hero-kicker{font-size:11px;letter-spacing:3px;color:var(--ink-light)}
+.hero-name{font-family:'ZCOOL KuaiLe',cursive;font-size:54px;margin:8px 0;color:var(--pink-soft);text-shadow:0 0 18px rgba(255,77,141,.35)}
+.hero-tag{font-size:15px;color:var(--ink-soft)}
+.hero-line{font-family:'Space Mono',monospace;font-size:26px;font-weight:700;margin:18px 0 6px}
+.hero-line .x{color:var(--pink)}
+.hero-sub{font-size:14px;color:var(--ink-soft);max-width:480px;margin:0 auto}
+.hero-cta{margin-top:28px;display:flex;gap:14px;justify-content:center}
+.btn{padding:11px 22px;border-radius:6px;font-size:14px;font-family:'Space Mono',monospace;border:1px solid var(--rule-2);transition:transform .15s,box-shadow .2s}
+.btn-pink{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none}
+.btn-pink:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(255,77,141,.35)}
+.btn-ghost{color:var(--ink-soft)}
+.btn-ghost:hover{color:var(--pink-soft);border-color:var(--pink-soft)}
+@media(max-width:640px){.hero-name{font-size:42px}.hero-line{font-size:20px}}
+</style>
