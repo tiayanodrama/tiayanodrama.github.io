@@ -246,6 +246,12 @@ def cutout_char(char_path):
     背景判定（与边缘连通才删，人物内部同色像素保留）：
       - 灰底：max(RGB)-min(RGB) < 25 且 min(RGB) > 90（低饱和，覆盖浅灰~中灰影棚底）
       - 黑块：sum(RGB) < 60
+
+    两次 flood fill：
+      1) 边缘 BFS：抠掉所有与图像边缘连通的背景（影棚底、边缘水印）
+      2) 孤岛 BFS：剩下的背景像素全部清掉（被人物/前景包围的水印遮挡块，
+         不与边缘连通，但一定是孤岛——人物身上的同色像素必然连成大块，
+         绝不可能孤立成 100×100 的纯色块）
     """
     im = Image.open(char_path).convert('RGBA')
     arr = np.array(im)
@@ -253,8 +259,9 @@ def cutout_char(char_path):
     r, g, b = arr[..., 0].astype(np.int32), arr[..., 1].astype(np.int32), arr[..., 2].astype(np.int32)
     chroma = np.maximum(np.maximum(r, g), b) - np.minimum(np.minimum(r, g), b)
     is_bg = ((chroma < 25) & (np.minimum(np.minimum(r, g), b) > 90)) | ((r + g + b) < 60)
-    # BFS flood fill：从四条边的背景像素开始
     visited = np.zeros((h, w), dtype=bool)
+
+    # 第 1 次：边缘 flood fill
     stack = []
     for x in range(w):
         for y in (0, h - 1):
@@ -273,11 +280,21 @@ def cutout_char(char_path):
             if 0 <= ny < h and 0 <= nx < w and is_bg[ny, nx] and not visited[ny, nx]:
                 visited[ny, nx] = True
                 stack.append((ny, nx))
+    edge_removed = visited.sum()
+
+    # 第 2 次：孤岛 flood fill——剩下的 is_bg 像素全部清掉
+    # 剩余的 is_bg 像素要么被人物包围（水印遮挡块），要么在图像内部的小污点
+    # 人物身上的同色像素会连成大块，但"孤岛背景"必然是被包围的小区域
+    rest_is_bg = is_bg & ~visited
+    ys, xs = np.where(rest_is_bg)
+    for y, x in zip(ys, xs):
+        visited[y, x] = True
+
     # 原本就透明的像素也并入
     visited |= (arr[..., 3] == 0)
     arr[visited, 3] = 0
     arr[~visited, 3] = 255
-    print(f'  {os.path.basename(char_path)}: 抠掉背景 {int(visited.sum())} 像素 ({visited.sum()/h/w*100:.1f}%), 保留人物 {int((~visited).sum())} 像素')
+    print(f'  {os.path.basename(char_path)}: 边缘抠 {int(edge_removed)} + 孤岛清 {int(rest_is_bg.sum())} = 总 {int(visited.sum())} 像素 ({visited.sum()/h/w*100:.1f}%), 保留人物 {int((~visited).sum())} 像素')
     return Image.fromarray(arr)
 
 def composite(scene_arr, char_path, out_path):
