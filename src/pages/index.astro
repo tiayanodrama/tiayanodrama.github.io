@@ -1,37 +1,244 @@
 ---
 import Layout from '../layouts/Layout.astro'
 ---
-<Layout title="张甜湉 · 个人站">
+<Layout title="张甜湉 · 个人站" description="财务管理硕士 × AI 内容方向 · 把模糊的岗位需求讲清楚，把人的材料呈现做对。">
+  <!-- ─── HERO 区域 ─────────────────────────────────────────────── -->
   <section class="hero">
-    <div class="hero-avatar">
-      <img src="/images/tt-anime.png" alt="张甜湉" />
+    <div class="hero-stage">
+      <div class="hero-grid-bg"></div>
+
+      <div class="hero-left">
+        <div class="kicker mono">
+          <span class="kicker-dot"></span>
+          ZHANG TIANTIAN · PORTFOLIO · v7.0
+        </div>
+        <h1 class="hero-title">
+          <span class="ht-row1">财务的严谨</span>
+          <span class="ht-x">×</span>
+          <span class="ht-row2">AI 的杠杆</span>
+        </h1>
+        <p class="hero-sub">
+          财务管理硕士在读 · 往 AI 内容方向走<br/>
+          把模糊的岗位需求讲清楚，把人的材料呈现做对。
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-pink" href="/about">
+            <span>▶ 进入使用说明书</span>
+          </a>
+          <a class="btn btn-cyan" href="/works">
+            <span>看作品</span>
+          </a>
+          <a class="btn btn-ghost" href="/contact">
+            <span>联系我</span>
+          </a>
+        </div>
+
+        <!-- HUD 状态条 -->
+        <div class="hud-strip">
+          <div class="hud-cell">
+            <span class="hc-label mono">STATUS</span>
+            <span class="hc-val glow-pink">● ONLINE</span>
+          </div>
+          <div class="hud-cell">
+            <span class="hc-label mono">FOCUS</span>
+            <span class="hc-val">AI × 财务</span>
+          </div>
+          <div class="hud-cell">
+            <span class="hc-label mono">REGION</span>
+            <span class="hc-val">SHENZHEN</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="char-card">
+          <div class="char-frame">
+            <img src="/images/tt-pixel-main.png" alt="张甜湉 像素角色" />
+          </div>
+          <div class="char-tag mono">CHAR.ID: TT-001</div>
+        </div>
+      </div>
     </div>
-    <p class="hero-kicker mono">ZHANG TIANTIAN · PORTFOLIO</p>
-    <h1 class="hero-name">张甜湉</h1>
-    <p class="hero-tag">财务管理硕士 · AI 内容方向</p>
-    <p class="hero-line">财务的严谨 <span class="x">×</span> AI 的杠杆</p>
-    <p class="hero-sub">把模糊的岗位需求讲清楚，把人的材料呈现做对。</p>
-    <div class="hero-cta">
-      <a class="btn btn-pink" href="/about">了解我 →</a>
-      <a class="btn btn-ghost" href="/works">看作品</a>
+
+    <!-- ─── 主菜单区（站点地图 HUD） ──────────────────────────── -->
+    <div class="section-map">
+      <div class="sm-head">
+        <span class="sm-kicker mono">// SITE MAP</span>
+        <span class="sm-title">站点导航</span>
+      </div>
+      <div class="sm-grid">
+        <a href="/about" class="sm-cell">
+          <span class="sm-num mono">01</span>
+          <span class="sm-name">关于我 / RPG 角色面板</span>
+          <span class="sm-desc">属性、技能箱、工作方式</span>
+        </a>
+        <a href="/works" class="sm-cell">
+          <span class="sm-num mono">02</span>
+          <span class="sm-name">作品 / 旗舰案例</span>
+          <span class="sm-desc">72% vs 55% 匹配度实验 + 横向画廊</span>
+        </a>
+        <a href="/method" class="sm-cell">
+          <span class="sm-num mono">03</span>
+          <span class="sm-name">AI 协作方法论</span>
+          <span class="sm-desc">四阶段方法论 + 配套工具</span>
+        </a>
+        <a href="/contact" class="sm-cell">
+          <span class="sm-num mono">04</span>
+          <span class="sm-name">联系 / 协同入口</span>
+          <span class="sm-desc">邮箱 · 微信 · GitHub</span>
+        </a>
+      </div>
     </div>
   </section>
 </Layout>
+
 <style>
-.hero{max-width:760px;margin:80px auto;padding:0 24px;text-align:center}
-.hero-avatar{width:120px;height:120px;border-radius:50%;margin:0 auto 22px;overflow:hidden;border:1px solid var(--rule-2);padding:4px;box-shadow:0 0 30px rgba(255,77,141,.25)}
-.hero-avatar img{width:100%;height:100%;object-fit:cover;object-position:center 32%;border-radius:50%;display:block}
-.hero-kicker{font-size:11px;letter-spacing:3px;color:var(--ink-light)}
-.hero-name{font-family:'ZCOOL KuaiLe',cursive;font-size:54px;margin:8px 0;color:var(--pink-soft);text-shadow:0 0 18px rgba(255,77,141,.35)}
-.hero-tag{font-size:15px;color:var(--ink-soft)}
-.hero-line{font-family:'Space Mono',monospace;font-size:26px;font-weight:700;margin:18px 0 6px}
-.hero-line .x{color:var(--pink)}
-.hero-sub{font-size:14px;color:var(--ink-soft);max-width:480px;margin:0 auto}
-.hero-cta{margin-top:28px;display:flex;gap:14px;justify-content:center}
-.btn{padding:11px 22px;border-radius:6px;font-size:14px;font-family:'Space Mono',monospace;border:1px solid var(--rule-2);transition:transform .15s,box-shadow .2s}
-.btn-pink{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none}
-.btn-pink:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(255,77,141,.35)}
-.btn-ghost{color:var(--ink-soft)}
-.btn-ghost:hover{color:var(--pink-soft);border-color:var(--pink-soft)}
-@media(max-width:640px){.hero-name{font-size:42px}.hero-line{font-size:20px}}
+.hero{max-width:1180px;margin:0 auto;padding:48px 24px 24px}
+
+/* ── Hero 主体 ─────────────────────────────────────────────────── */
+.hero-stage{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:48px;
+  align-items:center;min-height:480px;
+  position:relative;
+  padding:36px 32px;
+  border:1px solid var(--rule);
+  border-radius:12px;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(255,77,141,.10),transparent 50%),
+    radial-gradient(circle at 90% 80%,rgba(33,230,193,.08),transparent 50%),
+    linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0));
+  backdrop-filter:blur(8px);
+  overflow:hidden;
+}
+.hero-grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,77,141,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,77,141,.05) 1px,transparent 1px);
+  background-size:32px 32px;
+  mask-image:radial-gradient(circle at 30% 50%,#000 0%,transparent 70%);
+  pointer-events:none;
+}
+
+.kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:2.5px;color:var(--pink);
+  padding:6px 14px;border-radius:20px;
+  background:rgba(255,77,141,.08);border:1px solid var(--rule-2);
+}
+.kicker-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--pink);
+  box-shadow:var(--glow-pink);
+  animation:pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+.hero-title{
+  font-family:var(--f-display);
+  font-size:74px;line-height:1.05;
+  margin:24px 0 18px;letter-spacing:-1px;
+  display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+}
+.ht-row1{color:var(--ink);text-shadow:0 0 18px rgba(255,77,141,.18)}
+.ht-x{
+  color:var(--cyan);font-family:var(--f-mono);font-size:42px;
+  text-shadow:var(--glow-cyan);
+  align-self:center;
+}
+.ht-row2{
+  background:linear-gradient(135deg,var(--pink) 0%,var(--purple) 60%,var(--cyan) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 24px rgba(160,76,255,.35));
+}
+
+.hero-sub{font-size:16px;color:var(--ink-soft);line-height:1.9;max-width:480px}
+
+.hero-cta{display:flex;gap:12px;margin:28px 0 24px;flex-wrap:wrap}
+
+/* HUD 状态条 */
+.hud-strip{
+  display:flex;gap:0;border:1px solid var(--rule);
+  border-radius:8px;overflow:hidden;
+  background:rgba(0,0,0,.3);
+  margin-top:24px;
+}
+.hud-cell{
+  flex:1;padding:10px 16px;
+  border-right:1px solid var(--rule);
+  display:flex;flex-direction:column;gap:4px;
+}
+.hud-cell:last-child{border-right:none}
+.hc-label{font-size:10px;color:var(--ink-light);letter-spacing:2px}
+.hc-val{font-size:14px;color:var(--ink);font-family:var(--f-mono);font-weight:700}
+
+/* ── 角色卡 ───────────────────────────────────────────────────── */
+.hero-right{display:flex;justify-content:center;align-items:center}
+.char-card{position:relative;width:100%;max-width:340px}
+.char-frame{
+  position:relative;
+  border-radius:12px;overflow:hidden;
+  border:1px solid var(--pink);
+  background:linear-gradient(135deg,rgba(255,77,141,.08),rgba(33,230,193,.06));
+  box-shadow:0 0 40px rgba(255,77,141,.25),inset 0 0 24px rgba(160,76,255,.1);
+  aspect-ratio:1/1;
+}
+.char-frame::before{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,transparent 70%,rgba(10,6,18,.6) 100%);
+}
+.char-frame img{
+  width:100%;height:100%;object-fit:contain;
+  filter:drop-shadow(0 0 18px rgba(255,77,141,.45));
+}
+.char-tag{
+  position:absolute;left:10px;top:10px;
+  font-size:10px;color:var(--cyan);
+  background:rgba(0,0,0,.6);padding:3px 8px;border-radius:4px;
+  border:1px solid rgba(33,230,193,.5);
+  letter-spacing:1.5px;
+  z-index:2;
+}
+
+/* ── 站点地图 HUD ────────────────────────────────────────────── */
+.section-map{margin:48px 0 24px}
+.sm-head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px}
+.sm-kicker{font-size:11px;color:var(--cyan);letter-spacing:3px;text-shadow:var(--glow-cyan)}
+.sm-title{font-family:var(--f-display);font-size:22px;color:var(--ink-soft)}
+.sm-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+}
+.sm-cell{
+  position:relative;display:flex;flex-direction:column;gap:6px;
+  padding:18px 18px;border:1px solid var(--rule);border-radius:8px;
+  background:var(--panel);
+  transition:all .2s;cursor:pointer;
+  text-decoration:none;color:inherit;
+}
+.sm-cell:hover{
+  border-color:var(--pink);
+  background:linear-gradient(135deg,rgba(255,77,141,.08),rgba(160,76,255,.04));
+  transform:translateY(-3px);
+  box-shadow:0 8px 24px rgba(255,77,141,.2);
+}
+.sm-cell:hover .sm-num{color:var(--pink);text-shadow:var(--glow-pink)}
+.sm-num{font-size:22px;color:var(--ink-mid);font-weight:700;transition:all .2s}
+.sm-name{font-size:15px;color:var(--ink);font-weight:500}
+.sm-desc{font-size:12px;color:var(--ink-light);line-height:1.5}
+
+/* ── 响应式 ────────────────────────────────────────────────────── */
+@media(max-width:880px){
+  .hero-stage{grid-template-columns:1fr;gap:28px;padding:28px 22px}
+  .hero-title{font-size:54px}
+  .ht-x{font-size:32px}
+  .hero-right{order:-1}
+  .char-card{max-width:240px}
+  .sm-grid{grid-template-columns:repeat(2,1fr)}
+  .hud-strip{flex-wrap:wrap}
+  .hud-cell{min-width:33.33%}
+}
+@media(max-width:520px){
+  .hero-title{font-size:42px}
+  .sm-grid{grid-template-columns:1fr}
+  .hud-cell{min-width:50%}
+}
 </style>

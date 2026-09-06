@@ -4,36 +4,121 @@ import Layout from '../layouts/Layout.astro'
 <Layout title="AI 协作方法论 · 张甜湉" description="一套四阶段的求职面试 AI 工作流：岗位分析 → 经历匹配 → 材料优化 → 笔面准备。">
   <div class="page">
     <div class="page-head">
-      <p class="page-kicker mono">METHOD</p>
+      <p class="page-kicker mono">METHOD · AI WORKFLOW v1.3</p>
       <h1 class="page-title">AI 协作方法论</h1>
       <p class="page-lead">我怎么用 AI 把"找工作"这件模糊的事，变成可拆解、可验证、可复用的流程。</p>
     </div>
 
+    <!-- 四阶段流程 -->
     <div class="block">
-      <h2>四个阶段</h2>
-      <div class="card"><h3>01 岗位分析</h3><p>拆职责、拆能力，区分<strong>核心要求</strong>（不满足基本没戏）和<strong>加分项</strong>；提取关键词与隐含期待，推断考察重点。</p></div>
-      <div class="card"><h3>02 经历匹配</h3><p>从全部素材里找具体证据，按能力重述；诚实标缺口；给每条证据标强度（L1 参与 / L2 承担 / L3 牵头）；算<strong>双轨匹配度</strong>。</p></div>
-      <div class="card"><h3>03 材料优化</h3><p>用 STAR 结构重写经历，量化优先；删空泛自评，换成可验证证据；每条经历补齐"情境 + 我的行动 + 结果反思"。</p></div>
-      <div class="card"><h3>04 笔面准备</h3><p>生成准备清单与预测问题；用五类高杀伤追问做压力测试；AI 扮演面试官模拟，练完复盘。</p></div>
+      <h2>四个阶段 · FOUR STAGES</h2>
+      <div class="stages">
+        <div class="stage-card">
+          <div class="sc-num mono">01</div>
+          <h3>岗位分析</h3>
+          <p>拆职责、拆能力，区分<strong>核心要求</strong>（不满足基本没戏）和<strong>加分项</strong>；提取关键词与隐含期待，推断考察重点。</p>
+          <span class="sc-arrow mono">→</span>
+        </div>
+        <div class="stage-card">
+          <div class="sc-num mono">02</div>
+          <h3>经历匹配</h3>
+          <p>从全部素材里找具体证据，按能力重述；诚实标缺口；给每条证据标强度（L1 参与 / L2 承担 / L3 牵头）；算<strong>双轨匹配度</strong>。</p>
+          <span class="sc-arrow mono">→</span>
+        </div>
+        <div class="stage-card">
+          <div class="sc-num mono">03</div>
+          <h3>材料优化</h3>
+          <p>用 STAR 结构重写经历，量化优先；删空泛自评，换成可验证证据；每条经历补齐"情境 + 我的行动 + 结果反思"。</p>
+          <span class="sc-arrow mono">→</span>
+        </div>
+        <div class="stage-card">
+          <div class="sc-num mono">04</div>
+          <h3>笔面准备</h3>
+          <p>生成准备清单与预测问题；用五类高杀伤追问做压力测试；AI 扮演面试官模拟，练完复盘。</p>
+          <span class="sc-arrow mono" style="visibility:hidden">→</span>
+        </div>
+      </div>
     </div>
 
     <div class="block">
-      <h2>一个关键认知：双轨匹配度</h2>
+      <h2>关键认知 · 双轨匹配度</h2>
       <p>匹配度必须打两条轨，不能混在一起：</p>
       <ul>
         <li><strong>实际能力匹配度</strong>——这个人到底能不能干这活（判断"要不要走这个方向"）</li>
         <li><strong>材料呈现匹配度</strong>——这份简历能不能让面试官看出来（决定"能不能拿到面试"）</li>
       </ul>
       <p>两轨的差值，就是最高优先级的待办清单。算分用 <strong>核心命中率 × 0.7 + 加分命中率 × 0.3</strong>，权重来自实践，仍在更多岗位上验证。</p>
-      <p class="quote">最具体的证据就是上面那次实验：同一人同一岗，两份简历 72% 对 55%——真实能力没变，变的是呈现。详见 <a href="/works" style="color:var(--pink-soft)">作品</a>。</p>
+      <div class="quote">
+        最具体的证据就是上面那次实验：同一人同一岗，两份简历 72% 对 55%——真实能力没变，变的是呈现。详见 <a href="/works" class="link">作品</a>。
+      </div>
     </div>
 
     <div class="block">
-      <h2>AI 的边界</h2>
-      <ul>
-        <li>AI 可以做：拆岗、整词、追问细节、发现表达缺口、生成初版、整理记录</li>
-        <li>我必须自己做：核对经历真实、判断是否适合自己、决定保留 / 修改哪些建议、对最终交付负责</li>
-      </ul>
+      <h2>AI 的边界 · AI BOUNDARIES</h2>
+      <div class="bounds">
+        <div class="bound-cell hud hud-cyan">
+          <div class="bc-label mono">// AI CAN DO</div>
+          <ul>
+            <li>拆岗、整词、追问细节</li>
+            <li>发现表达缺口、生成初版</li>
+            <li>整理记录、跑模拟压力测试</li>
+          </ul>
+        </div>
+        <div class="bound-cell hud">
+          <div class="bc-label mono">// I MUST DO</div>
+          <ul>
+            <li>核对经历真实、判断是否适合自己</li>
+            <li>决定保留 / 修改哪些 AI 建议</li>
+            <li>对最终交付负责</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </Layout>
+
+<style>
+/* 四阶段流程 */
+.stages{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  position:relative;
+}
+.stage-card{
+  position:relative;padding:18px 16px;
+  background:linear-gradient(180deg,rgba(255,77,141,.06),rgba(255,255,255,.01));
+  border:1px solid var(--rule);border-radius:8px;
+  transition:all .2s;
+}
+.stage-card:hover{border-color:var(--pink);transform:translateY(-3px);box-shadow:0 8px 22px rgba(255,77,141,.18)}
+.sc-num{
+  font-size:34px;color:var(--pink-soft);font-weight:700;line-height:1;
+  text-shadow:var(--glow-pink);
+}
+.stage-card h3{font-size:16px;color:var(--ink);margin:8px 0 8px;font-weight:500}
+.stage-card p{font-size:13px;color:var(--ink-soft);line-height:1.7}
+.sc-arrow{
+  position:absolute;right:-12px;top:50%;transform:translateY(-50%);
+  color:var(--cyan);font-size:18px;text-shadow:var(--glow-cyan);z-index:2;
+  background:var(--bg);width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--cyan);
+}
+
+/* 边界 */
+.bounds{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.bound-cell{padding:18px 20px}
+.bc-label{font-size:11px;color:var(--cyan);letter-spacing:2px;margin-bottom:8px;text-shadow:var(--glow-cyan)}
+.bound-cell.hud .bc-label{color:var(--pink);text-shadow:var(--glow-pink)}
+.bound-cell ul{list-style:none;font-size:13.5px;color:var(--ink-soft);line-height:1.85}
+.bound-cell li::before{content:'▸ ';color:var(--cyan);margin-right:4px}
+.bound-cell.hud li::before{color:var(--pink)}
+
+@media(max-width:880px){
+  .stages{grid-template-columns:1fr 1fr}
+  .sc-arrow{display:none}
+  .bounds{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .stages{grid-template-columns:1fr}
+}
+</style>

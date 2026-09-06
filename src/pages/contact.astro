@@ -4,17 +4,67 @@ import Layout from '../layouts/Layout.astro'
 <Layout title="联系 · 张甜湉" description="欢迎来聊合作或聊想法。邮箱、微信、GitHub。">
   <div class="page">
     <div class="page-head">
-      <p class="page-kicker mono">CONTACT</p>
+      <p class="page-kicker mono">CONTACT · LET'S TALK</p>
       <h1 class="page-title">联系我</h1>
       <p class="page-lead">不管是聊合作、聊岗位，还是单纯聊聊 AI 怎么用——都欢迎。</p>
     </div>
+
     <div class="block">
-      <div class="card">
-        <p><span class="tag">邮箱</span> <a href="mailto:zhangtiantianxyt@163.com" style="color:var(--ink)">zhangtiantianxyt@163.com</a></p>
-        <p><span class="tag">微信</span> zhangtiantianxyt</p>
-        <p><span class="tag">GitHub</span> <a href="https://github.com/tiayanodrama" style="color:var(--ink)">github.com/tiayanodrama</a></p>
+      <div class="contacts">
+        <a href="mailto:zhangtiantianxyt@163.com" class="ct-cell hud">
+          <div class="ct-icon mono glow-pink">@</div>
+          <div class="ct-kicker mono">EMAIL</div>
+          <div class="ct-value">zhangtiantianxyt@163.com</div>
+        </a>
+        <div class="ct-cell hud hud-cyan">
+          <div class="ct-icon mono glow-cyan">⊕</div>
+          <div class="ct-kicker mono">WECHAT</div>
+          <div class="ct-value">zhangtiantianxyt</div>
+        </div>
+        <a href="https://github.com/tiayanodrama" target="_blank" rel="noopener" class="ct-cell hud hud-purple">
+          <div class="ct-icon mono glow-purple">⌥</div>
+          <div class="ct-kicker mono">GITHUB</div>
+          <div class="ct-value">github.com/tiayanodrama</div>
+        </a>
       </div>
-      <p class="quote">注：为公开环境考虑，这里没放手机号；需要的话直接邮件或微信找我就好。</p>
+    </div>
+
+    <div class="block">
+      <div class="hud">
+        <div class="bound-head">
+          <span class="mono bh-tag">// NOTE</span>
+          <span class="bh-title">关于联系方式</span>
+        </div>
+        <p>为公开环境考虑，这里没放手机号；需要的话直接邮件或微信找我就好。回复一般在 24 小时内，最迟 48 小时。</p>
+        <p style="margin-top:12px">如果你希望我用更结构化的方式帮你处理"岗位 × 简历"匹配 / 招新对比 / 内容文案，欢迎直接发素材 + 目标给我，我用 SKILL 跑一遍再回。</p>
+      </div>
     </div>
   </div>
 </Layout>
+
+<style>
+.contacts{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.ct-cell{
+  display:flex;flex-direction:column;gap:8px;
+  padding:22px 20px;text-decoration:none;color:inherit;
+  transition:all .2s;
+}
+.ct-cell:hover{transform:translateY(-3px);border-color:var(--pink);box-shadow:0 8px 24px rgba(255,77,141,.2)}
+.ct-cell.hud-cyan:hover{border-color:var(--cyan);box-shadow:0 8px 24px rgba(33,230,193,.2)}
+.ct-cell.hud-purple:hover{border-color:var(--purple);box-shadow:0 8px 24px rgba(160,76,255,.2)}
+.ct-icon{font-size:28px;line-height:1}
+.ct-kicker{font-size:11px;color:var(--pink);letter-spacing:2px;text-shadow:var(--glow-pink)}
+.ct-cell.hud-cyan .ct-kicker{color:var(--cyan);text-shadow:var(--glow-cyan)}
+.ct-cell.hud-purple .ct-kicker{color:var(--purple);text-shadow:var(--glow-purple)}
+.ct-value{font-size:14px;color:var(--ink);font-family:var(--f-mono);word-break:break-all}
+
+.bound-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.bh-tag{font-size:10px;color:var(--cyan);letter-spacing:2px;text-shadow:var(--glow-cyan)}
+.bh-title{font-size:14px;color:var(--ink-soft)}
+
+@media(max-width:768px){
+  .contacts{grid-template-columns:1fr}
+}
+</style>

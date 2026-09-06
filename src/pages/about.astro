@@ -1,51 +1,355 @@
 ---
 import Layout from '../layouts/Layout.astro'
 ---
-<Layout title="关于我 · 张甜湉" description="财务管理硕士，正在往 AI 内容方向转型。理性脑 + 感性心，喜欢把复杂的事讲清楚、做对。">
+<Layout title="关于我 · RPG 角色面板 · 张甜湉" description="张甜湉的 RPG 角色面板：属性、技能树、工作方式、协作偏好。">
   <div class="page">
     <div class="page-head">
-      <p class="page-kicker mono">ABOUT</p>
+      <p class="page-kicker mono">ABOUT · RPG CHARACTER PANEL</p>
       <h1 class="page-title">关于我</h1>
-      <p class="page-lead">财务管理硕士，正在往 AI 内容方向转型。理性脑 + 感性心，喜欢把复杂的事讲清楚、做对。</p>
+      <p class="page-lead">一张 RPG 角色面板——看完你就知道我是什么属性、走什么技能树、能跟你怎么合作。</p>
     </div>
 
-    <div class="block">
-      <h2>我是谁</h2>
-      <div class="kw">
-        <span>真诚</span><span>目标导向</span><span>完成大于完美</span><span>理性 × 感性</span><span>支持型连接者</span>
+    <!-- ── 角色卡 + 表情轮播 ────────────────────────────────── -->
+    <div class="rpg-stage">
+      <div class="char-portrait">
+        <img src="/images/tt-pixel-main.png" alt="张甜湉 像素角色" class="char-main" id="charMain" data-state="main"/>
+        <div class="char-name-plate">
+          <span class="cn-zh">张甜湉</span>
+          <span class="cn-en mono">ZHANG · TIANTIAN</span>
+        </div>
+        <div class="char-class">
+          <span class="cc-tag tag">财务管理硕士</span>
+          <span class="cc-tag tag tag-cyan">AI 内容方向</span>
+        </div>
       </div>
-      <p>在团队里我更像一块"连接者"——把技术、业务、人和方向串起来，在背后出主意、想方案。我不一定是最前面的那个，但常常是把大家粘在一起的人。</p>
-      <p>长期想成为的一种人，是一个<strong>"超级个体"</strong>：一个人 + 一些得力的工具，做成原本要一整个团队才能做的事。这不是口号，而是我每天在用 AI 协作去靠近的状态。</p>
+
+      <aside class="char-info">
+        <div class="ci-block">
+          <div class="ci-label mono">// CHARACTER ID</div>
+          <div class="ci-value">TT-001 · Lv 22</div>
+        </div>
+        <div class="ci-block">
+          <div class="ci-label mono">// REGION</div>
+          <div class="ci-value">深圳 · 中南财经政法大学</div>
+        </div>
+        <div class="ci-block">
+          <div class="ci-label mono">// TITLE</div>
+          <div class="ci-value">「超级个体」修炼中</div>
+        </div>
+
+        <div class="ci-block">
+          <div class="ci-label mono">// EXPRESSION</div>
+          <div class="expr-row">
+            <button class="expr-btn active" data-target="main" data-label="主立绘">
+              <img src="/images/tt-pixel-main.png" alt="主立绘" />
+            </button>
+            <button class="expr-btn" data-target="happy" data-label="开心">
+              <img src="/images/tt_expr_happy.png" alt="开心" />
+            </button>
+            <button class="expr-btn" data-target="think" data-label="思考">
+              <img src="/images/tt_expr_think.png" alt="思考" />
+            </button>
+            <button class="expr-btn" data-target="focus" data-label="专注">
+              <img src="/images/tt_expr_focus.png" alt="专注" />
+            </button>
+            <button class="expr-btn" data-target="shy" data-label="害羞">
+              <img src="/images/tt_expr_shy.png" alt="害羞" />
+            </button>
+            <button class="expr-btn" data-target="cheer" data-label="加油">
+              <img src="/images/tt_expr_cheer.png" alt="加油" />
+            </button>
+          </div>
+          <div class="expr-name mono" id="exprName">主立绘</div>
+        </div>
+      </aside>
     </div>
 
+    <!-- ── 属性面板（进度条） ──────────────────────────────── -->
     <div class="block">
-      <h2>我的工作方式</h2>
-      <h3>接任务</h3>
-      <p>开工前只要五件事清楚，我就能很快动起来：最终交付什么、什么时候要、需要什么条件、我负责哪块、有没有参考案例。</p>
-      <h3>推进节奏</h3>
-      <p>习惯先出粗版再迭代——完成大于完美。状态好时 1–3 天能出初稿。让我效率最高的是：对事情有兴趣、一点适度的紧迫感、能看到做这件事的回报。</p>
-      <h3>沟通与反馈</h3>
-      <p>你直接告诉我做什么、什么时候要就好，别绕太多；先给一句话结论，再补细节。收到反馈时，具体、自然、不带太多委婉最好。如果我不同意，会直说，但尽量说得缓和。</p>
-      <h3>和 AI 协作</h3>
-      <p>AI 是我的全面搭档：帮判断轻重、搭框架、抠细节、查漏补缺。但核心判断始终是我自己做——AI 让流程顺很多，方向由我定。</p>
+      <h2>属性面板 · ATTRIBUTES</h2>
+      <div class="attr-grid">
+        <div class="attr-cell">
+          <div class="attr-row">
+            <span class="attr-name">财务专业度 <span class="mono attr-cap">FINANCE</span></span>
+            <span class="attr-num mono">90</span>
+            <span class="attr-max mono">/100</span>
+          </div>
+          <div class="stat-bar" data-fill="90"></div>
+          <div class="attr-desc">财务管理硕士 · 4 段审计/财务实习 · 完整实操闭环</div>
+        </div>
+        <div class="attr-cell">
+          <div class="attr-row">
+            <span class="attr-name">AI 协作力 <span class="mono attr-cap">AI PIVOT</span></span>
+            <span class="attr-num mono glow-pink">85</span>
+            <span class="attr-max mono">/100</span>
+          </div>
+          <div class="stat-bar" data-fill="85"></div>
+          <div class="attr-desc">AI 工作流 SKILL v1.3 · 跨工具协同 · 一人顶一支小队</div>
+        </div>
+        <div class="attr-cell">
+          <div class="attr-row">
+            <span class="attr-name">内容表达 <span class="mono attr-cap">COMM</span></span>
+            <span class="attr-num mono">80</span>
+            <span class="attr-max mono">/100</span>
+          </div>
+          <div class="stat-bar" data-fill="80"></div>
+          <div class="attr-desc">写作金奖 · 文案 · 把复杂事讲清楚</div>
+        </div>
+        <div class="attr-cell">
+          <div class="attr-row">
+            <span class="attr-name">连接者 <span class="mono attr-cap">LINK</span></span>
+            <span class="attr-num mono">85</span>
+            <span class="attr-max mono">/100</span>
+          </div>
+          <div class="stat-bar" data-fill="85"></div>
+          <div class="attr-desc">副面试官 · 公益项目协调 · 把人和方向串起来</div>
+        </div>
+        <div class="attr-cell">
+          <div class="attr-row">
+            <span class="attr-name">好奇心 <span class="mono attr-cap">CURIOSITY</span></span>
+            <span class="attr-num mono glow-cyan">∞</span>
+            <span class="attr-max mono">no cap</span>
+          </div>
+          <div class="stat-bar" data-fill="90"></div>
+          <div class="attr-desc">摄影 / 潜水 / 文学 / 写作 / 街舞 — 一直想学新东西</div>
+        </div>
+        <div class="attr-cell">
+          <div class="attr-row">
+            <span class="attr-name">抗压韧性 <span class="mono attr-cap">RESILIENCE</span></span>
+            <span class="attr-num mono">80</span>
+            <span class="attr-max mono">/100</span>
+          </div>
+          <div class="stat-bar" data-fill="80"></div>
+          <div class="attr-desc">高强度实习 / 比赛 / 项目并行 · 状态越压越稳</div>
+        </div>
+      </div>
     </div>
 
+    <!-- ── 技能树 ──────────────────────────────────────────── -->
     <div class="block">
-      <h2>我的技能箱</h2>
-      <div class="card"><span class="tag">AI 工具</span> WorkBuddy · DeepSeek(API) · 本地部署 AI Agent · 飞书机器人</div>
-      <div class="card"><span class="tag">编程 / 技术</span> Python 脚本 · API 对接 · 本地 Agent 部署 · 命令行</div>
-      <div class="card"><span class="tag">数据分析</span> Excel / VBA · Stata · SPSS · Python(pandas / matplotlib)</div>
-      <div class="card"><span class="tag">内容创作</span> 写作 · 文案策划 · 财务管理视角的深度表达</div>
+      <h2>技能树 · SKILL TREE</h2>
+      <div class="skill-tree">
+        <div class="st-branch">
+          <div class="st-node st-pink">
+            <span class="st-tier mono">TIER S</span>
+            <span class="st-name">AI 工具协作</span>
+          </div>
+          <ul class="st-list">
+            <li>WorkBuddy / DeepSeek API / 本地 AI Agent</li>
+            <li>飞书机器人 / lark-cli 系列技能</li>
+            <li>Prompt 工程 · 多轮调试 · 让 AI 出真活儿</li>
+          </ul>
+        </div>
+
+        <div class="st-branch">
+          <div class="st-node st-cyan">
+            <span class="st-tier mono">TIER A</span>
+            <span class="st-name">数据分析</span>
+          </div>
+          <ul class="st-list">
+            <li>Excel / VBA（独立开发 3000+ 条数据自动化模型）</li>
+            <li>Stata · SPSS · Python（pandas / matplotlib）</li>
+            <li>SQL · API 对接 · 命令行</li>
+          </ul>
+        </div>
+
+        <div class="st-branch">
+          <div class="st-node st-purple">
+            <span class="st-tier mono">TIER A</span>
+            <span class="st-name">内容 / 表达</span>
+          </div>
+          <ul class="st-list">
+            <li>写作 · 文案 · 公众号长文 · 大学生文艺作品金奖</li>
+            <li>PS / PR / AU · 视频 / 图片 / 音频处理</li>
+            <li>把"专业事"翻译成"人话"</li>
+          </ul>
+        </div>
+
+        <div class="st-branch">
+          <div class="st-node st-warm">
+            <span class="st-tier mono">TIER B</span>
+            <span class="st-name">审计 / 财务实操</span>
+          </div>
+          <ul class="st-list">
+            <li>函证全流程 · 独立执行抽盘程序（500 余份 / 1,000 项）</li>
+            <li>银行流水核查 · 信用报告交叉比对</li>
+            <li>金蝶系统 · 应收应付 · 月度财报</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
+    <!-- ── 我的工作方式 ────────────────────────────────────── -->
+    <div class="block">
+      <h2>协作偏好 · HOW TO WORK WITH ME</h2>
+      <div class="work-grid">
+        <div class="work-cell hud">
+          <span class="wc-icon mono">▶</span>
+          <div class="wc-name">接任务</div>
+          <p>开工前只要五件事清楚就能动：交付、deadline、条件、我的边界、参考案例。</p>
+        </div>
+        <div class="work-cell hud hud-cyan">
+          <span class="wc-icon mono">⟳</span>
+          <div class="wc-name">推进节奏</div>
+          <p>先出粗版再迭代——完成大于完美。状态好 1–3 天能出初稿。</p>
+        </div>
+        <div class="work-cell hud hud-purple">
+          <span class="wc-icon mono">▣</span>
+          <div class="wc-name">沟通反馈</div>
+          <p>直接告诉我做什么、什么时候要；先结论再细节。反馈要具体、自然。</p>
+        </div>
+        <div class="work-cell hud">
+          <span class="wc-icon mono">✦</span>
+          <div class="wc-name">AI 协作</div>
+          <p>AI 是我的全面搭档——但方向与判断始终是我做。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 一点经历 ────────────────────────────────────────── -->
     <div class="block">
       <h2>一点经历</h2>
       <ul>
         <li>作为副面试官参与一场真实的校园招聘面试，独立评分并整理候选人档案</li>
-        <li>2026 暑期参与一个 AI 实践训练营（北辰青年），完成个人说明书、招新对比研究与方法论沉淀</li>
+        <li>2026 暑期参与一个 AI 实践训练营，完成个人说明书、招新对比研究与方法论沉淀</li>
         <li>持续把"岗位分析 × 简历匹配"的方法论跑在真实招聘岗位上，已迭代到 v1.3</li>
       </ul>
-      <p class="quote">这个站本身也是一件作品：它把我过去零散的产出，用 AI 重新捏成了一个属于我自己的、面向市场的资产。</p>
+      <div class="quote">
+        这个站本身也是一件作品：它把我过去零散的产出，用 AI 重新捏成了一个属于我自己的、面向市场的资产。
+      </div>
     </div>
   </div>
+
+  <!-- 表情切换小脚本 -->
+  <script>
+    const map = {
+      main:   { src: '/images/tt-pixel-main.png', label: '主立绘' },
+      happy:  { src: '/images/tt_expr_happy.png',  label: '开心' },
+      think:  { src: '/images/tt_expr_think.png',  label: '思考' },
+      focus:  { src: '/images/tt_expr_focus.png',  label: '专注' },
+      shy:    { src: '/images/tt_expr_shy.png',    label: '害羞' },
+      cheer:  { src: '/images/tt_expr_cheer.png',  label: '加油' },
+    };
+    const main = document.getElementById('charMain');
+    const name = document.getElementById('exprName');
+    document.querySelectorAll('.expr-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.target;
+        const meta = map[key];
+        if (!meta || !main) return;
+        main.src = meta.src;
+        main.dataset.state = key;
+        if (name) name.textContent = meta.label;
+        document.querySelectorAll('.expr-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  </script>
 </Layout>
+
+<style>
+/* ── 角色卡区 ───────────────────────────────────────────── */
+.rpg-stage{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:36px;align-items:start;
+  margin:36px 0 28px;padding:28px;
+  border:1px solid var(--rule);border-radius:12px;
+  background:
+    linear-gradient(135deg,rgba(255,77,141,.05),rgba(33,230,193,.04));
+  position:relative;
+}
+.rpg-stage::before{
+  content:'';position:absolute;top:14px;left:14px;
+  width:14px;height:14px;border:2px solid var(--pink);
+  border-right:none;border-bottom:none;border-radius:6px 0 0 0;
+}
+.rpg-stage::after{
+  content:'';position:absolute;bottom:14px;right:14px;
+  width:14px;height:14px;border:2px solid var(--cyan);
+  border-left:none;border-top:none;border-radius:0 0 6px 0;
+}
+
+.char-portrait{position:relative;text-align:center}
+.char-main{
+  width:100%;max-width:280px;
+  filter:drop-shadow(0 0 24px rgba(255,77,141,.45));
+  transition:all .35s ease;
+}
+.char-name-plate{
+  margin-top:14px;display:flex;flex-direction:column;gap:2px;
+}
+.cn-zh{font-family:var(--f-display);font-size:30px;color:var(--pink-soft);text-shadow:0 0 16px rgba(255,77,141,.4)}
+.cn-en{font-size:11px;color:var(--ink-light);letter-spacing:3px}
+.char-class{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+
+.char-info{display:flex;flex-direction:column;gap:18px}
+.ci-block{padding:12px 14px;border:1px solid var(--rule);border-radius:8px;background:rgba(0,0,0,.2)}
+.ci-label{font-size:10px;color:var(--cyan);letter-spacing:2.5px;margin-bottom:4px;text-shadow:var(--glow-cyan)}
+.ci-value{font-size:15px;color:var(--ink)}
+
+.expr-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.expr-btn{
+  background:transparent;border:1px solid var(--rule);
+  border-radius:6px;padding:4px;cursor:pointer;
+  aspect-ratio:1/1;overflow:hidden;
+  transition:all .2s;
+}
+.expr-btn img{width:100%;height:100%;object-fit:contain}
+.expr-btn:hover{border-color:var(--pink);transform:translateY(-2px)}
+.expr-btn.active{
+  border-color:var(--cyan);
+  box-shadow:var(--glow-cyan);
+  background:rgba(33,230,193,.08);
+}
+.expr-name{
+  margin-top:8px;text-align:center;font-size:12px;color:var(--pink-soft);
+  letter-spacing:2px;
+}
+
+/* ── 属性面板 ────────────────────────────────────────────── */
+.attr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.attr-cell{padding:14px 16px;border:1px solid var(--rule);border-radius:8px;background:rgba(0,0,0,.2)}
+.attr-row{display:flex;align-items:baseline;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.attr-name{font-size:14px;color:var(--ink);flex:1;display:flex;align-items:center;gap:8px}
+.attr-cap{font-size:10px;color:var(--cyan);padding:2px 8px;border-radius:10px;background:rgba(33,230,193,.1);border:1px solid rgba(33,230,193,.3)}
+.attr-num{font-size:18px;font-weight:700;color:var(--pink-soft);font-variant-numeric:tabular-nums;position:relative;z-index:2}
+.attr-max{font-size:11px;color:var(--ink-light)}
+.attr-desc{font-size:12px;color:var(--ink-light);margin-top:8px;line-height:1.6}
+
+/* ── 技能树 ────────────────────────────────────────────── */
+.skill-tree{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.st-branch{padding:16px 18px;border:1px solid var(--rule);border-radius:8px;background:rgba(0,0,0,.2)}
+.st-node{
+  display:flex;align-items:center;gap:10px;margin-bottom:10px;
+  padding-bottom:10px;border-bottom:1px solid var(--rule);
+}
+.st-tier{
+  font-size:10px;letter-spacing:2px;padding:3px 10px;border-radius:4px;
+  background:rgba(255,77,141,.15);color:var(--pink);border:1px solid var(--pink);
+}
+.st-cyan .st-tier{background:rgba(33,230,193,.15);color:var(--cyan);border-color:var(--cyan)}
+.st-purple .st-tier{background:rgba(160,76,255,.15);color:var(--purple);border-color:var(--purple)}
+.st-warm .st-tier{background:rgba(255,193,120,.15);color:var(--warm);border-color:var(--warm)}
+.st-name{font-size:16px;color:var(--ink);font-weight:500}
+.st-list{list-style:none;font-size:13.5px;color:var(--ink-soft);line-height:1.9}
+.st-list li::before{content:'▸ ';color:var(--pink);margin-right:4px}
+
+/* ── 协作偏好 ──────────────────────────────────────────── */
+.work-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.work-cell{padding:18px 16px}
+.wc-icon{font-size:22px;color:var(--pink);text-shadow:var(--glow-pink);display:block;margin-bottom:10px}
+.work-cell.hud-cyan .wc-icon{color:var(--cyan);text-shadow:var(--glow-cyan)}
+.work-cell.hud-purple .wc-icon{color:var(--purple);text-shadow:var(--glow-purple)}
+.wc-name{font-size:15px;color:var(--ink);font-weight:500;margin-bottom:6px}
+.work-cell p{font-size:12.5px;color:var(--ink-soft);line-height:1.7}
+
+/* ── 响应式 ─────────────────────────────────────────────── */
+@media(max-width:880px){
+  .rpg-stage{grid-template-columns:1fr;gap:22px;padding:22px}
+  .attr-grid{grid-template-columns:1fr}
+  .skill-tree{grid-template-columns:1fr}
+  .work-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+  .work-grid{grid-template-columns:1fr}
+}
+</style>

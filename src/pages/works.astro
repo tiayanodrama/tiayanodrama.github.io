@@ -4,64 +4,360 @@ import Layout from '../layouts/Layout.astro'
 <Layout title="作品 · 张甜湉" description="简历×岗位匹配实验、实习招新对比研究、求职面试 AI 工作流、个人说明书交互落地页。">
   <div class="page">
     <div class="page-head">
-      <p class="page-kicker mono">WORKS</p>
+      <p class="page-kicker mono">WORKS · FLAGSHIP CASE + GALLERY</p>
       <h1 class="page-title">作品</h1>
       <p class="page-lead">几件能代表我怎么思考、怎么做事的东西——方法、研究，和一件自己做的网页。</p>
     </div>
 
+    <!-- ── 旗舰案例：72% vs 55% 交互演示 ────────────────────── -->
     <div class="block">
       <h2>旗舰案例 · 简历 × 岗位匹配实验</h2>
-      <div class="card">
-        <p>同一份岗位 JD，我用自己的两份定位不同的简历各跑了一遍匹配度：<strong>一份 72%，一份 55%</strong>。</p>
-        <div class="stat">
-          <div class="stat-col">
-            <span class="num num-a">72%</span>
-            <span class="stat-cap">运营 / 内容向简历</span>
+      <div class="hud hud-flagship">
+        <div class="flagship-head">
+          <span class="mono fh-tag">// CASE 001 · FLAGSHIP</span>
+          <span class="mono fh-stat">同一份 JD · 两份定位不同的简历 · 各跑一遍</span>
+        </div>
+        <p class="flagship-lead">
+          同一份岗位 JD，我用自己的两份定位不同的简历各跑了一遍匹配度：<strong>一份 72%，一份 55%</strong>。
+        </p>
+
+        <div class="vs-stage">
+          <button class="vs-card vs-card-a active" data-side="a" aria-label="查看运营向策略">
+            <span class="vc-label mono">RESUME A · 运营 / 内容向</span>
+            <div class="vc-num num-display glow-pink" data-num="72">0</div>
+            <span class="vc-cap mono">JOB FIT · PERCENT</span>
+            <div class="vc-meta">
+              <span class="tag tag-warm">关键词命中</span>
+              <span class="tag">+17 pts</span>
+            </div>
+          </button>
+
+          <div class="vs-mid">
+            <span class="vs-delta mono glow-warm">−17 pts</span>
+            <span class="vs-sub mono">same person · different framing</span>
+            <button class="btn btn-cyan" id="playBtn">▶ 再跑一次</button>
           </div>
-          <div class="stat-mid mono">− 17 pts</div>
-          <div class="stat-col">
-            <span class="num num-b">55%</span>
-            <span class="stat-cap">财务 / 审计向简历</span>
+
+          <button class="vs-card vs-card-b" data-side="b" aria-label="查看审计向策略">
+            <span class="vc-label mono">RESUME B · 财务 / 审计向</span>
+            <div class="vc-num num-display" data-num="55" style="color:var(--ink-soft);text-shadow:0 0 14px rgba(183,171,196,.35)">0</div>
+            <span class="vc-cap mono">JOB FIT · PERCENT</span>
+            <div class="vc-meta">
+              <span class="tag tag-cyan">关键词未命中</span>
+              <span class="tag">基准</span>
+            </div>
+          </button>
+        </div>
+
+        <div class="flagship-insight" id="insight">
+          <div class="insight-head">
+            <span class="mono ih-tag" id="ihTag">// STRATEGY · RESUME A</span>
+          </div>
+          <div class="insight-body" id="ihBody">
+            <strong>关键词重定向：</strong>从财务术语切到运营术语（DAU、留存、内容运营），匹配项从 11 项跃升到 21 项；同时把项目描述顺序按"用户增长 → 数据驱动 → 跨部门协作"重新排列。
           </div>
         </div>
-        <p class="quote">人没变，能力没变，只是材料呈现变了——匹配度就差了 17 个点。这件事逼我看见第一遍看不见的东西：<strong>拿到面试的是"材料呈现"，不是"真实能力"；而两者的差值，才是最该处理的清单。</strong></p>
-        <p>它不是虚荣指标。换一份简历就能显著改变分数，说明它真的在测量"材料与岗位的契合度"。完整方法见 <a href="/method" style="color:var(--pink-soft)">AI 协作方法论</a>。</p>
+
+        <div class="quote flagship-quote">
+          <strong>人没变，能力没变，只是材料呈现变了——匹配度就差了 17 个点。</strong>
+          这件事逼我看见第一遍看不见的东西：<strong>拿到面试的是"材料呈现"，不是"真实能力"；而两者的差值，才是最该处理的清单。</strong>
+        </div>
       </div>
     </div>
 
+    <!-- ── 横向画廊：其他 3 件作品 ──────────────────────────────── -->
     <div class="block">
-      <h2>实习招新对比研究</h2>
-      <div class="card">
-        <span class="tag">财会类</span><span class="tag">采购运营类</span><span class="tag">真实帖子</span><span class="tag">6 维度拆解</span>
-        <p>抓取两类实习的真实招新帖子，从岗位职责、能力要求、加分项、工作节奏、成长路径、门槛六个维度做并排对比，帮"该投哪类岗"从感觉变成判断。</p>
+      <h2>其他作品 · GALLERY</h2>
+      <p class="gallery-hint mono">← 横向滑动浏览 →</p>
+      <div class="gallery-h">
+        <article class="g-card">
+          <div class="gc-cover gc-cover-1">
+            <span class="gc-cover-num mono">01</span>
+            <div class="gc-cover-deco"></div>
+          </div>
+          <div class="gc-body">
+            <span class="gc-kicker mono">RESEARCH · 2026.08</span>
+            <h3>实习招新对比研究</h3>
+            <div class="gc-tags">
+              <span class="tag tag-purple">财会类</span>
+              <span class="tag tag-purple">采购运营类</span>
+              <span class="tag tag-cyan">真实帖子</span>
+              <span class="tag">6 维度</span>
+            </div>
+            <p>抓取两类实习的真实招新帖子，从岗位职责、能力要求、加分项、工作节奏、成长路径、门槛六个维度并排对比，帮"该投哪类岗"从感觉变成判断。</p>
+          </div>
+        </article>
+
+        <article class="g-card">
+          <div class="gc-cover gc-cover-2">
+            <span class="gc-cover-num mono">02</span>
+            <div class="gc-cover-deco"></div>
+          </div>
+          <div class="gc-body">
+            <span class="gc-kicker mono">METHOD · v1.3</span>
+            <h3>求职面试 AI 工作流 · SKILL</h3>
+            <div class="gc-tags">
+              <span class="tag tag-cyan">四阶段</span>
+              <span class="tag tag-cyan">可复用</span>
+              <span class="tag tag-purple">已落地</span>
+            </div>
+            <p>把"怎么分析岗位、怎么从经历里找证据、怎么调表达、怎么准备笔面"固化成一套能反复跑的方法。看到新岗位，把信息和素材放进去，再跑一次就行。</p>
+          </div>
+        </article>
+
+        <article class="g-card">
+          <div class="gc-cover gc-cover-3">
+            <span class="gc-cover-num mono">03</span>
+            <div class="gc-cover-deco"></div>
+          </div>
+          <div class="gc-body">
+            <span class="gc-kicker mono">PAGE · 2026.08</span>
+            <h3>个人说明书 · 交互落地页</h3>
+            <div class="gc-tags">
+              <span class="tag tag-warm">粉黑动漫风</span>
+              <span class="tag tag-warm">可交互</span>
+              <span class="tag">V6.0</span>
+            </div>
+            <p>把"如何与我合作"写成一张粉黑游戏风的交互网页：身份、任务、沟通、反馈、压力与支持系统，一页看全。也是我对"个人品牌该长什么样"的一次实操。</p>
+          </div>
+        </article>
+
+        <article class="g-card">
+          <div class="gc-cover gc-cover-4">
+            <span class="gc-cover-num mono">04</span>
+            <div class="gc-cover-deco"></div>
+          </div>
+          <div class="gc-body">
+            <span class="gc-kicker mono">DATA · STATA 18</span>
+            <h3>论文指标复刻 · 财务领域</h3>
+            <div class="gc-tags">
+              <span class="tag tag-purple">Stata</span>
+              <span class="tag tag-purple">统一口径法</span>
+              <span class="tag">E1/E2/E3</span>
+            </div>
+            <p>把已复刻到 T 年的论文指标，安全延伸到 T+n 年——冻结原版处理阈值，一次跑完整样本，已在 5 篇核心论文上验证。</p>
+          </div>
+        </article>
       </div>
     </div>
 
+    <!-- ── 成就墙（4 个数据徽章） ──────────────────────────── -->
     <div class="block">
-      <h2>求职面试 AI 工作流 · SKILL</h2>
-      <div class="card">
-        <span class="tag">四阶段</span><span class="tag">可复用</span><span class="tag">v1.3</span>
-        <p>把"怎么分析岗位、怎么从经历里找证据、怎么调表达、怎么准备笔面"固化成一套能反复跑的方法。看到新岗位，把信息和素材放进去，再跑一次就行。已用真实面试与真实岗位迭代到 v1.3。</p>
+      <h2>成就墙 · ACHIEVEMENTS</h2>
+      <div class="achv-grid">
+        <div class="achv-badge">
+          <div class="achv-icon mono glow-pink">★</div>
+          <div class="achv-num num-display glow-pink">17</div>
+          <div class="achv-cap mono">pts 提升</div>
+          <div class="achv-desc">同一份简历 · 重新定位关键词 · 匹配度从 55% 拉到 72%</div>
+        </div>
+        <div class="achv-badge">
+          <div class="achv-icon mono glow-cyan">✦</div>
+          <div class="achv-num num-display glow-cyan">3000</div>
+          <div class="achv-cap mono">条 / 月</div>
+          <div class="achv-desc">VBA 自动化模型 · 把 1 周的人工压缩到 20 分钟</div>
+        </div>
+        <div class="achv-badge">
+          <div class="achv-icon mono glow-purple">◆</div>
+          <div class="achv-num num-display glow-purple">10+</div>
+          <div class="achv-cap mono">省级以上</div>
+          <div class="achv-desc">挑战杯 / 数学建模 / 英语竞赛 等 10 余项省级以上奖项</div>
+        </div>
+        <div class="achv-badge">
+          <div class="achv-icon mono" style="color:var(--warm);text-shadow:0 0 16px rgba(255,193,120,.5)">∞</div>
+          <div class="achv-num num-display" style="color:var(--warm);text-shadow:0 0 18px rgba(255,193,120,.5)">∞</div>
+          <div class="achv-cap mono">好奇心</div>
+          <div class="achv-desc">摄影 / 潜水 / 文学 / 街舞 — 一直想学新东西</div>
+        </div>
       </div>
     </div>
 
-    <div class="block">
-      <h2>个人说明书 · 交互落地页</h2>
-      <div class="card">
-        <span class="tag">粉黑动漫风</span><span class="tag">可交互</span>
-        <p>把"如何与我合作"写成一张粉黑游戏风的交互网页：关于我的身份、任务、沟通、反馈、压力与支持系统，一页看全。也是我对"个人品牌该长什么样"的一次实操。</p>
-      </div>
-    </div>
   </div>
+
+  <!-- 72/55 交互脚本 -->
+  <script>
+    const insights = {
+      a: {
+        tag: '// STRATEGY · RESUME A',
+        body: '<strong>关键词重定向：</strong>从财务术语切到运营术语（DAU、留存、内容运营），匹配项从 11 项跃升到 21 项；同时把项目描述顺序按"用户增长 → 数据驱动 → 跨部门协作"重新排列，让第一页就能命中 JD 的高频动作。',
+      },
+      b: {
+        tag: '// STRATEGY · RESUME B',
+        body: '<strong>保留原样投递：</strong>这份简历用的是财务审计关键词（函证、监盘、抽盘、底稿），针对的是财会岗位——而这份运营 JD 与这些词的交集天然较低，于是匹配度停在 55%。<strong>这不是简历"错"，而是定位"错"</strong>——同一份内容换一个 JD 又会变成高分。',
+      },
+    };
+
+    const els = {
+      cards: document.querySelectorAll('.vs-card'),
+      insightTag: document.getElementById('ihTag'),
+      insightBody: document.getElementById('ihBody'),
+      btn: document.getElementById('playBtn'),
+      nums: document.querySelectorAll('.vc-num'),
+    };
+
+    function setActive(side){
+      els.cards.forEach(c => c.classList.toggle('active', c.dataset.side === side));
+      els.insightTag.textContent = insights[side].tag;
+      els.insightBody.innerHTML = insights[side].body;
+      animateNums(side);
+    }
+
+    function animateNums(activeSide){
+      els.nums.forEach(n => {
+        const target = +n.dataset.num;
+        const isActive = n.closest('.vs-card').dataset.side === activeSide;
+        n.style.opacity = '1';
+        if (!isActive){
+          n.style.opacity = '0.55';
+        }
+        let cur = 0;
+        const start = performance.now();
+        const dur = 1100;
+        const from = 0;
+        const tick = (t) => {
+          const p = Math.min(1, (t - start) / dur);
+          const eased = 1 - Math.pow(1 - p, 3);
+          cur = from + (target - from) * eased;
+          n.textContent = Math.round(cur);
+          if (p < 1) requestAnimationFrame(tick);
+          else n.textContent = target;
+        };
+        requestAnimationFrame(tick);
+      });
+    }
+
+    els.cards.forEach(c => c.addEventListener('click', () => setActive(c.dataset.side)));
+    els.btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // 来回切换两侧，重跑
+      const cur = document.querySelector('.vs-card.active').dataset.side;
+      setActive(cur === 'a' ? 'b' : 'a');
+    });
+
+    // 首次加载默认动画
+    setTimeout(() => setActive('a'), 300);
+  </script>
 </Layout>
 
 <style>
-.stat{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:18px;margin:18px 0;text-align:center}
-.stat-col{display:flex;flex-direction:column;gap:6px}
-.stat .num{font-family:'Space Mono',monospace;font-size:46px;font-weight:700;line-height:1;position:relative;z-index:2}
-.num-a{color:#FF4D8D}
-.num-b{color:#B7ABC4}
-.stat-cap{font-size:12px;color:var(--ink-light);font-family:'Space Mono',monospace}
-.stat-mid{font-size:14px;color:var(--warm)}
-@media(max-width:640px){.stat{grid-template-columns:1fr;gap:14px}.stat-mid{order:2}}
+.flagship-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.fh-tag{font-size:10px;letter-spacing:2px;color:var(--cyan);text-shadow:var(--glow-cyan)}
+.fh-stat{font-size:11px;color:var(--ink-light);letter-spacing:1.5px}
+.flagship-lead{font-size:15px;color:var(--ink-soft);line-height:1.9;margin-bottom:20px}
+.flagship-lead strong{color:var(--pink-soft)}
+
+.vs-stage{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:18px;
+  align-items:center;margin:22px 0;
+}
+.vs-card{
+  position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:26px 18px;
+  background:linear-gradient(180deg,rgba(255,77,141,.05),rgba(255,77,141,.01));
+  border:1px solid var(--rule);border-radius:10px;
+  cursor:pointer;transition:all .25s;
+  text-align:center;
+}
+.vs-card:hover{transform:translateY(-3px);border-color:var(--pink);box-shadow:0 8px 26px rgba(255,77,141,.18)}
+.vs-card-b{background:linear-gradient(180deg,rgba(160,76,255,.04),rgba(255,255,255,.01))}
+.vs-card-b:hover{border-color:var(--purple);box-shadow:0 8px 26px rgba(160,76,255,.18)}
+.vs-card.active{
+  border-color:var(--pink);box-shadow:var(--glow-pink);
+  background:linear-gradient(180deg,rgba(255,77,141,.12),rgba(255,77,141,.02));
+}
+.vc-label{font-size:11px;color:var(--ink-light);letter-spacing:1.5px}
+.vc-num{
+  font-size:78px;line-height:1;font-weight:700;
+  font-variant-numeric:tabular-nums;
+  position:relative;z-index:2;
+  transition:opacity .3s;
+}
+.vc-cap{font-size:10px;color:var(--ink-light);letter-spacing:2px}
+.vc-meta{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+
+.vs-mid{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.vs-delta{
+  font-size:28px;font-weight:700;
+  color:var(--warm);text-shadow:0 0 18px rgba(255,193,120,.55);
+  font-variant-numeric:tabular-nums;
+}
+.vs-sub{font-size:10px;color:var(--ink-light);letter-spacing:1.5px}
+
+.flagship-insight{
+  margin-top:14px;padding:14px 16px;
+  background:rgba(0,0,0,.3);border:1px dashed var(--rule-2);
+  border-radius:8px;
+}
+.insight-head{margin-bottom:6px}
+.ih-tag{font-size:10px;color:var(--cyan);letter-spacing:2px;text-shadow:var(--glow-cyan)}
+.insight-body{font-size:14px;color:var(--ink-soft);line-height:1.85}
+.insight-body strong{color:var(--pink-soft)}
+
+.flagship-quote{margin-top:18px}
+
+/* ── 画廊 ────────────────────────────────────────────────── */
+.gallery-hint{
+  font-size:11px;color:var(--ink-light);letter-spacing:2px;
+  margin-bottom:8px;
+}
+.g-card{
+  display:flex;flex-direction:column;
+  border:1px solid var(--rule);border-radius:10px;
+  background:var(--panel);overflow:hidden;
+  transition:all .25s;
+}
+.g-card:hover{border-color:var(--pink);transform:translateY(-3px);box-shadow:0 12px 32px rgba(255,77,141,.18)}
+.gc-cover{
+  position:relative;aspect-ratio:16/9;
+  display:flex;align-items:flex-start;justify-content:flex-end;
+  padding:14px;
+}
+.gc-cover-1{background:linear-gradient(135deg,#2A1B4F,#FF4D8D)}
+.gc-cover-2{background:linear-gradient(135deg,#0F4A4D,#21E6C1)}
+.gc-cover-3{background:linear-gradient(135deg,#4A1B2E,#FF6FA5)}
+.gc-cover-4{background:linear-gradient(135deg,#1F1B4A,#A04CFF)}
+.gc-cover-num{
+  font-size:42px;font-weight:700;color:rgba(255,255,255,.85);
+  font-family:var(--f-mono);text-shadow:0 4px 12px rgba(0,0,0,.3);
+}
+.gc-cover-deco{
+  position:absolute;left:14px;top:14px;
+  width:36px;height:4px;background:rgba(255,255,255,.7);border-radius:2px;
+  box-shadow:0 8px 0 rgba(255,255,255,.5);
+}
+.gc-body{padding:14px 16px 18px;display:flex;flex-direction:column;gap:8px}
+.gc-kicker{font-size:10px;color:var(--cyan);letter-spacing:2px;text-shadow:var(--glow-cyan)}
+.gc-body h3{font-size:15px;color:var(--ink);font-weight:500}
+.gc-tags{display:flex;gap:4px;flex-wrap:wrap}
+.gc-body p{font-size:13px;color:var(--ink-soft);line-height:1.7}
+
+/* ── 成就墙 ──────────────────────────────────────────────── */
+.achv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+.achv-badge{
+  padding:22px 18px;text-align:center;
+  border:1px solid var(--rule);border-radius:10px;
+  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));
+  transition:all .25s;
+}
+.achv-badge:hover{
+  border-color:var(--pink);transform:translateY(-3px);
+  box-shadow:0 10px 28px rgba(255,77,141,.2);
+}
+.achv-icon{font-size:24px;margin-bottom:6px}
+.achv-num{font-size:42px;font-weight:700;line-height:1;margin:6px 0;font-variant-numeric:tabular-nums}
+.achv-cap{font-size:11px;color:var(--ink-light);letter-spacing:2px;margin-bottom:8px;display:block}
+.achv-desc{font-size:12px;color:var(--ink-soft);line-height:1.6}
+
+/* ── 响应式 ──────────────────────────────────────────────── */
+@media(max-width:880px){
+  .vs-stage{grid-template-columns:1fr;gap:18px}
+  .vs-mid{order:2}
+  .achv-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+  .vc-num{font-size:62px}
+  .achv-grid{grid-template-columns:1fr}
+}
 </style>

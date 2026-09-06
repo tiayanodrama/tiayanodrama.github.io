@@ -19,6 +19,13 @@ const { title = '张甜湉 · 个人站', description = '财务的严谨 × AI �
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Serif+SC:wght@400;500;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- 全局装饰层：扫描线 + 角标 -->
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="corner-deco" aria-hidden="true">
+    <span class="cd tl"></span><span class="cd tr"></span>
+    <span class="cd bl"></span><span class="cd br"></span>
+  </div>
+
   <Nav />
   <main class="main">
     <slot />
@@ -26,3 +33,18 @@ const { title = '张甜湉 · 个人站', description = '财务的严谨 × AI �
   <Footer />
 </body>
 </html>
+
+<style is:global>
+.scanlines{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:repeating-linear-gradient(180deg,transparent 0,transparent 3px,rgba(255,77,141,.018) 3px,rgba(255,77,141,.018) 4px);
+  mix-blend-mode:screen;
+}
+.corner-deco{position:fixed;inset:0;z-index:50;pointer-events:none}
+.cd{position:absolute;width:36px;height:36px;border:2px solid var(--pink);opacity:.6}
+.cd.tl{top:14px;left:14px;border-right:none;border-bottom:none;border-radius:6px 0 0 0}
+.cd.tr{top:14px;right:14px;border-left:none;border-bottom:none;border-radius:0 6px 0 0}
+.cd.bl{bottom:14px;left:14px;border-right:none;border-top:none;border-radius:0 0 0 6px}
+.cd.br{bottom:14px;right:14px;border-left:none;border-top:none;border-radius:0 0 6px 0}
+@media(max-width:640px){.cd{width:24px;height:24px}}
+</style>
