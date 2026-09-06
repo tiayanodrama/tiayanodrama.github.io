@@ -23,12 +23,12 @@ const f=new Set("的 了 和 与 或 是 在 把 被 也 还 但 而 及 对 为
 
 技能：文案 / 排版 / 公众号 / 小红书 / Excel / 数据分析 / 跨部门协作。`,b:`张甜湉 · 财务审计向简历
 
-教育：财务管理硕士在读
+教育：中南财经政法大学 · 财务管理硕士在读
 
 经历：
-- 中审众环实习：独立执行函证程序 500 余份，参与存货监盘 1000 项，编写底稿；
-- 清华兰考项目：作为核心成员完成银行流水核查、信用报告交叉比对；
-- 武汉光至科技：负责应收应付月结、金蝶系统操作、月度财报编制；
-- 北大深圳：开发 VBA 自动化模型处理 3000+ 条凭证数据。
+- 安永华明会计师事务所（深圳分所 · IPO 项目）：独立核对全量银行账户流水与《已开立银行结算账户清单》，逐户验证账户完整性并执行大额资金收付双向测试；通过企业征信系统查询企业及关联方信用报告，交叉比对未披露的对外担保与质押；赴多地仓库执行存货监盘与抽盘程序。
+- 中审众环会计师事务所（珠海 · 格力电器总部年审）：独立负责 500 余份供应商及客户函证的制作、寄发与追踪，利用企查查复核回函地址修正 20 余处异常；赴格力电器多地仓库独立执行抽盘核对 1000+ 项；完成 10 余册审计工作底稿索引编制。
+- 北京大学深圳医院财务部：独立开发 VBA 自动化模型处理 3000+ 条月度绩效数据，将处理时长由 1 周压缩至 20 分钟，效率提升 90%，获科室采纳并演示汇报。
+- 武汉光至科技财务部：金蝶系统独立处理 100+ 笔应收应付账款，完成两期月度财务报表编制；500+ 条银行交易逐笔核对。
 
-技能：函证 / 监盘 / 抽盘 / 底稿 / 银行流水核查 / 金蝶 / VBA / Excel / 财务分析。`};function I(){document.getElementById("jdText").value=g.jd,document.getElementById("resumeA").value=g.a,document.getElementById("resumeB").value=g.b}function C(){document.getElementById("jdText").value="",document.getElementById("resumeA").value="",document.getElementById("resumeB").value="",w(),document.getElementById("termBody").innerHTML='<div class="term-line dim"># 已清空 · 等待 RUN …</div>',document.getElementById("vsStage").style.display="none",document.getElementById("kwCompare").style.display="none"}document.getElementById("runBtn").addEventListener("click",v);document.getElementById("fillSampleBtn").addEventListener("click",I);document.getElementById("clearBtn").addEventListener("click",C);window.addEventListener("DOMContentLoaded",()=>{I(),setTimeout(v,500)});
+技能：函证 / 监盘 / 抽盘 / 资金流水核查 / 信用报告与关联方核查 / 金蝶 / VBA / Excel / 财务分析。`};function I(){document.getElementById("jdText").value=g.jd,document.getElementById("resumeA").value=g.a,document.getElementById("resumeB").value=g.b}function C(){document.getElementById("jdText").value="",document.getElementById("resumeA").value="",document.getElementById("resumeB").value="",w(),document.getElementById("termBody").innerHTML='<div class="term-line dim"># 已清空 · 等待 RUN …</div>',document.getElementById("vsStage").style.display="none",document.getElementById("kwCompare").style.display="none"}document.getElementById("runBtn").addEventListener("click",v);document.getElementById("fillSampleBtn").addEventListener("click",I);document.getElementById("clearBtn").addEventListener("click",C);window.addEventListener("DOMContentLoaded",()=>{I(),setTimeout(v,500)});
