@@ -1,25 +1,25 @@
 ---
 import Layout from '../layouts/Layout.astro'
 ---
-<Layout title="关于我 · RPG 角色面板 · 张甜湉" description="张甜湉的 RPG 角色面板：属性、技能树、工作方式、协作偏好。">
+<Layout title="关于我 · 张甜湉" description="一张角色面板：我的属性、技能、做事方式。">
   <div class="page">
     <div class="page-head">
-      <p class="page-kicker mono">ABOUT · RPG CHARACTER PANEL</p>
+      <p class="page-kicker mono">ABOUT · CHARACTER PANEL</p>
       <h1 class="page-title">关于我</h1>
-      <p class="page-lead">一张 RPG 角色面板——看完你就知道我是什么属性、走什么技能树、能跟你怎么合作。</p>
+      <p class="page-lead">一张角色面板——看完你就知道我大致是什么属性、走什么技能树、能跟你怎么合作。</p>
     </div>
 
     <!-- ── 角色卡 + 表情轮播 ────────────────────────────────── -->
     <div class="rpg-stage">
       <div class="char-portrait">
-        <img src="/images/tt-pixel-main.png" alt="张甜湉 像素角色" class="char-main" id="charMain" data-state="main"/>
+        <img src="/images/tt-pixel-main-v6.png" alt="TT 像素角色" class="char-main" id="charMain" data-state="main"/>
         <div class="char-name-plate">
-          <span class="cn-zh">张甜湉</span>
+          <span class="cn-zh cn">张甜湉</span>
           <span class="cn-en mono">ZHANG · TIANTIAN</span>
         </div>
         <div class="char-class">
-          <span class="cc-tag tag">财务管理硕士</span>
-          <span class="cc-tag tag tag-cyan">AI 内容方向</span>
+          <span class="cc-tag tag tag-cyan">TT</span>
+          <span class="cc-tag tag">不断生长中</span>
         </div>
       </div>
 
@@ -30,7 +30,7 @@ import Layout from '../layouts/Layout.astro'
         </div>
         <div class="ci-block">
           <div class="ci-label mono">// REGION</div>
-          <div class="ci-value">深圳 · 中南财经政法大学</div>
+          <div class="ci-value">深圳 · 在读中</div>
         </div>
         <div class="ci-block">
           <div class="ci-label mono">// TITLE</div>
@@ -41,7 +41,7 @@ import Layout from '../layouts/Layout.astro'
           <div class="ci-label mono">// EXPRESSION</div>
           <div class="expr-row">
             <button class="expr-btn active" data-target="main" data-label="主立绘">
-              <img src="/images/tt-pixel-main.png" alt="主立绘" />
+              <img src="/images/tt-pixel-main-v6.png" alt="主立绘" />
             </button>
             <button class="expr-btn" data-target="happy" data-label="开心">
               <img src="/images/tt_expr_happy.png" alt="开心" />
@@ -223,7 +223,7 @@ import Layout from '../layouts/Layout.astro'
   <!-- 表情切换小脚本 -->
   <script>
     const map = {
-      main:   { src: '/images/tt-pixel-main.png', label: '主立绘' },
+      main:   { src: '/images/tt-pixel-main-v6.png', label: '主立绘' },
       happy:  { src: '/images/tt_expr_happy.png',  label: '开心' },
       think:  { src: '/images/tt_expr_think.png',  label: '思考' },
       focus:  { src: '/images/tt_expr_focus.png',  label: '专注' },
@@ -277,7 +277,7 @@ import Layout from '../layouts/Layout.astro'
 .char-name-plate{
   margin-top:14px;display:flex;flex-direction:column;gap:2px;
 }
-.cn-zh{font-family:var(--f-display);font-size:30px;color:var(--pink-soft);text-shadow:0 0 16px rgba(255,77,141,.4)}
+.cn-zh{font-family:var(--f-cn);font-size:30px;font-weight:700;color:var(--pink-soft);text-shadow:0 0 16px rgba(255,77,141,.4);letter-spacing:4px}
 .cn-en{font-size:11px;color:var(--ink-light);letter-spacing:3px}
 .char-class{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
 

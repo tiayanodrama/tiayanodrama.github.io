@@ -2,7 +2,28 @@
 import '../styles/global.css'
 import Nav from '../components/Nav.astro'
 import Footer from '../components/Footer.astro'
-const { title = '张甜湉 · 个人站', description = '财务的严谨 × AI 的杠杆——把模糊的岗位需求讲清楚，把人的材料呈现做对。' } = Astro.props
+const { title = 'TT · 张甜湉', description = '一个把零散产出捏成作品的个人站。写作、AI 协作、研究、摄影、运动——关于我怎么想、怎么做。' } = Astro.props
+
+// 随机生成星点（星座感）
+const stars = Array.from({length: 80}).map((_, i) => {
+  const colors = ['', '', 'big', 'pink', 'cyan', 'purple']
+  const pick = colors[Math.floor(Math.random() * colors.length)]
+  return {
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    d: 2 + Math.random() * 4,
+    delay: Math.random() * 5,
+    cls: pick,
+  }
+})
+// 流星
+const meteors = [
+  { y: 12, x: -5, dur: 7,  delay: 0.5, cls: 'pink' },
+  { y: 28, x: -8, dur: 9,  delay: 3.2, cls: 'cyan' },
+  { y: 46, x: -10, dur: 6, delay: 6.5, cls: 'purple' },
+  { y: 66, x: -4, dur: 8,  delay: 2.0, cls: 'warm' },
+  { y: 82, x: -12, dur: 11, delay: 8.0, cls: 'pink' },
+]
 ---
 <!doctype html>
 <html lang="zh-CN">
@@ -16,9 +37,22 @@ const { title = '张甜湉 · 个人站', description = '财务的严谨 × AI �
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Serif+SC:wght@400;500;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- 星空层 -->
+  <div class="starfield" aria-hidden="true">
+    {stars.map(s => (
+      <span class={`s-star ${s.cls}`} style={`top:${s.y}%;left:${s.x}%;--d:${s.d}s;--delay:${s.delay}s`}></span>
+    ))}
+  </div>
+  <!-- 流星层 -->
+  <div class="meteor-field" aria-hidden="true">
+    {meteors.map(m => (
+      <span class={`meteor ${m.cls}`} style={`--y:${m.y}%;--x:${m.x}%;--dur:${m.d}s;--delay:${m.delay}s`}></span>
+    ))}
+  </div>
+
   <!-- 全局装饰层：扫描线 + 角标 -->
   <div class="scanlines" aria-hidden="true"></div>
   <div class="corner-deco" aria-hidden="true">

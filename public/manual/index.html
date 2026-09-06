@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TT · 个人说明书</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@400;600;700;900&family=ZCOOL+KuaiLe&family=Space+Mono:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+/* ============ 基础变量 ============ */
+:root{
+  --bg:#0B0712;
+  --bg-2:#150C1F;
+  --bg-3:#1F0F2C;
+  --surface:#1A1226;
+  --surface-2:#241A33;
+  --ink:#F5EDF5;
+  --ink-soft:#C9BFD0;
+  --ink-light:#8E849A;
+  --pink:#FF2E7E;
+  --pink-soft:#FF7AB0;
+  --pink-glow:rgba(255,46,126,0.55);
+  --purple:#A04CFF;
+  --purple-soft:#C58FFF;
+  --cyan:#00F0FF;
+  --warm:#FFB347;
+  --border:rgba(255,255,255,0.08);
+  --border-pink:rgba(255,46,126,0.35);
+  --radius:18px;
+  --radius-sm:12px;
+  --shadow-pink:0 0 28px rgba(255,46,126,0.35);
+  --shadow-soft:0 6px 28px rgba(0,0,0,0.4);
+  --shadow-hover:0 0 40px rgba(255,46,126,0.5);
+  --ease:cubic-bezier(0.4,0,0.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{
+  scroll-snap-type:y proximity;
+  scroll-behavior:smooth;
+}
+body{
+  font-family:'Noto Sans SC',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+  line-height:1.7;
+}
+/* 全局背景——粉黑渐变 + 噪点 */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,46,126,0.12), transparent 40%),
+    radial-gradient(circle at 82% 28%, rgba(160,76,255,0.10), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(255,179,71,0.06), transparent 50%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 60%, var(--bg) 100%);
+  z-index:-2;
+}
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(
+    180deg,
+    rgba(255,255,255,0.012) 0px,
+    rgba(255,255,255,0.012) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index:-1;
+  pointer-events:none;
+}
+
+/* ============ 顶部 HUD ============ */
+.hud-top{
+  position:fixed;top:0;left:0;right:0;
+  height:36px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;
+  background:linear-gradient(180deg, rgba(11,7,18,0.85), rgba(11,7,18,0.6));
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+  z-index:100;
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:1.5px;
+}
+.hud-top .left,.hud-top .right{display:flex;align-items:center;gap:18px}
+.hud-top .dot{
+  display:inline-block;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--pink);
+  margin-right:6px;
+  box-shadow:0 0 8px var(--pink);
+  animation:pulse 1.6s infinite;
+}
+.hud-top .label{color:var(--ink-light)}
+.hud-top .val{color:var(--pink-soft);font-weight:700}
+
+/* ============ 进度条 ============ */
+.progress-bar{
+  position:fixed;top:36px;left:0;
+  height:2px;
+  background:linear-gradient(90deg, var(--pink), var(--purple), var(--cyan));
+  z-index:99;width:0%;
+  transition:width 0.3s;
+  box-shadow:0 0 8px var(--pink);
+}
+
+/* ============ 右侧导航 ============ */
+.nav-dots{
+  position:fixed;right:24px;top:50%;
+  transform:translateY(-50%);
+  z-index:80;
+  display:flex;flex-direction:column;gap:14px;
+}
+.nav-dot{
+  width:12px;height:12px;
+  transform:rotate(45deg);
+  border:1.5px solid var(--ink-light);
+  background:transparent;
+  cursor:pointer;
+  transition:all 0.3s var(--ease);
+  position:relative;
+}
+.nav-dot.active{
+  background:var(--pink);
+  border-color:var(--pink);
+  box-shadow:0 0 12px var(--pink);
+  transform:rotate(45deg) scale(1.3);
+}
+.nav-dot:hover::after{
+  content:attr(data-label);
+  position:absolute;
+  right:24px;top:50%;
+  transform:translateY(-50%) rotate(0deg);
+  white-space:nowrap;
+  font-size:12px;
+  color:var(--pink-soft);
+  background:var(--surface);
+  padding:4px 12px;
+  border-radius:6px;
+  border:1px solid var(--border-pink);
+  font-family:'Space Mono',monospace;
+}
+
+/* ============ 通用 slide ============ */
+.slide{
+  min-height:100vh;
+  scroll-snap-align:start;
+  padding:96px 40px 80px;
+  position:relative;
+  overflow:hidden;
+}
+.slide-num{
+  position:absolute;top:64px;left:40px;
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  color:var(--ink-light);
+  letter-spacing:2px;
+}
+.slide-tag{
+  position:absolute;top:64px;right:80px;
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  color:var(--pink-soft);
+  letter-spacing:2px;
+}
+/* 四角 HUD 括号 */
+.hud-corners{position:absolute;inset:0;pointer-events:none;z-index:1}
+.hud-corners::before,.hud-corners::after,
+.hud-corners > i:nth-child(1),.hud-corners > i:nth-child(2){
+  content:'';
+  position:absolute;
+  width:36px;height:36px;
+  border:2px solid var(--pink);
+  box-shadow:0 0 12px var(--pink-glow);
+}
+.hud-corners::before{top:60px;left:24px;border-right:0;border-bottom:0}
+.hud-corners::after{top:60px;right:64px;border-left:0;border-bottom:0}
+.hud-corners > i:nth-child(1){bottom:48px;left:24px;border-right:0;border-top:0}
+.hud-corners > i:nth-child(2){bottom:48px;right:64px;border-left:0;border-top:0}
+
+/* ============ 通用卡片 ============ */
+.card{
+  background:linear-gradient(160deg, rgba(36,26,51,0.9), rgba(26,18,38,0.7));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:28px;
+  position:relative;
+  overflow:hidden;
+  backdrop-filter:blur(8px);
+  transition:all 0.4s var(--ease);
+}
+.card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg, var(--pink), transparent);
+  opacity:0.5;
+}
+.card:hover{
+  border-color:var(--border-pink);
+  box-shadow:var(--shadow-soft),var(--shadow-pink);
+  transform:translateY(-4px);
+}
+.card .num{
+  font-family:'Press Start 2P',monospace;
+  font-size:14px;
+  color:var(--pink);
+  text-shadow:0 0 8px var(--pink-glow);
+  margin-bottom:14px;
+}
+.card .ttl{
+  font-family:'ZCOOL KuaiLe',sans-serif;
+  font-size:22px;
+  color:var(--ink);
+  margin-bottom:12px;
+  font-weight:400;
+}
+.card .desc{
+  font-size:14.5px;
+  color:var(--ink-soft);
+  line-height:1.8;
+}
+
+/* ============ Slide 1 Hero ============ */
+#s1{
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg .float-shape{
+  position:absolute;border-radius:50%;
+  filter:blur(40px);opacity:0.4;
+  animation:floatMove 7s ease-in-out infinite;
+}
+.fs1{width:200px;height:200px;background:var(--pink);top:15%;left:8%;animation-delay:0s}
+.fs2{width:140px;height:140px;background:var(--purple);bottom:20%;right:12%;animation-delay:1s}
+.fs3{width:100px;height:100px;background:var(--cyan);top:55%;left:18%;animation-delay:2s;opacity:0.25}
+.fs4{width:160px;height:160px;background:#FF7AB0;top:30%;right:22%;animation-delay:3s;opacity:0.3}
+.hero-container{
+  position:relative;z-index:2;
+  max-width:1100px;width:100%;
+  display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;
+  align-items:center;
+}
+.hero-photos{position:relative;height:520px}
+.hero-main{
+  position:absolute;
+  left:0;top:30px;
+  width:78%;height:460px;
+  border-radius:20px;
+  background:var(--surface);
+  border:2px solid var(--pink);
+  box-shadow:0 0 32px var(--pink-glow), var(--shadow-soft);
+  overflow:hidden;
+  transform:rotate(-2deg);
+  transition:transform 0.4s var(--ease);
+}
+.hero-main:hover{transform:rotate(0)}
+.hero-main img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+}
+.hero-main::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 70%, rgba(11,7,18,0.6));
+  pointer-events:none;
+}
+.hero-mini{
+  position:absolute;
+  right:0;bottom:0;
+  width:70%;height:180px;
+  border-radius:14px;
+  background:var(--surface);
+  border:2px solid var(--cyan);
+  box-shadow:0 0 20px rgba(0,240,255,0.4);
+  overflow:hidden;
+  transform:rotate(4deg);
+  transition:transform 0.4s var(--ease);
+}
+.hero-mini:hover{transform:rotate(0) scale(1.04)}
+.hero-mini img{
+  width:100%;height:100%;object-fit:cover;
+}
+.hero-text{text-align:left}
+.hero-system{
+  font-family:'Space Mono',monospace;
+  font-size:11px;letter-spacing:3px;
+  color:var(--cyan);
+  margin-bottom:14px;
+  text-transform:uppercase;
+}
+.hero-name{
+  font-family:'Space Mono',monospace;
+  font-size:128px;
+  font-weight:700;
+  line-height:0.9;
+  background:linear-gradient(135deg, var(--pink) 0%, #FFF 50%, var(--cyan) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 40px var(--pink-glow);
+  margin-bottom:6px;
+  letter-spacing:10px;
+}
+.hero-cn{
+  font-family:'Noto Serif SC',serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--ink);
+  letter-spacing:8px;
+  margin-bottom:16px;
+  opacity:0.92;
+}
+.hero-pinyin{
+  font-family:'Space Mono',monospace;
+  font-size:14px;
+  color:var(--ink-light);
+  letter-spacing:8px;
+  margin-bottom:18px;
+}
+.hero-sub{
+  font-size:17px;
+  color:var(--ink-soft);
+  line-height:1.9;
+  margin-bottom:28px;
+}
+.hero-tags{
+  display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px;
+}
+.hero-tag{
+  padding:6px 14px;
+  border-radius:14px;
+  font-size:13px;
+  font-family:'ZCOOL KuaiLe',sans-serif;
+  background:rgba(255,46,126,0.08);
+  border:1px solid var(--border-pink);
+  color:var(--pink-soft);
+}
+.hero-tag.tag-open{
+  background:rgba(255,46,126,0.16);
+  border-color:var(--pink);
+  color:var(--pink);
+  box-shadow:0 0 12px rgba(255,46,126,0.28);
+}
+.hero-stat{
+  display:flex;gap:32px;
+  padding-top:18px;
+  border-top:1px dashed var(--border);
+}
+.hero-stat .item{text-align:center}
+.hero-stat .big{
+  font-family:'Press Start 2P',monospace;
+  font-size:22px;
+  color:var(--pink);
+  text-shadow:0 0 12px var(--pink-glow);
+}
+.hero-stat .sm{
+  font-size:11px;color:var(--ink-light);
+  margin-top:6px;letter-spacing:1px;
+}
+.scroll-hint{
+  position:absolute;bottom:32px;left:50%;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  color:var(--ink-light);
+  letter-spacing:2px;
+}
+.scroll-arrow{
+  width:18px;height:18px;
+  border-right:2px solid var(--cyan);
+  border-bottom:2px solid var(--cyan);
+  transform:rotate(45deg);
+  animation:bounce 1.6s infinite;
+}
+
+/* ============ Slide 2 身份 ============ */
+#s2{
+  background:linear-gradient(180deg, transparent, rgba(255,46,126,0.04) 50%, transparent);
+}
+.s2-container{
+  max-width:1180px;width:100%;
+  margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;
+  align-items:center;
+}
+.s2-text .ch{
+  font-family:'ZCOOL KuaiLe',sans-serif;
+  font-size:56px;
+  line-height:1.2;
+  background:linear-gradient(135deg, var(--pink), var(--purple));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:8px;
+}
+.s2-text .en{
+  font-family:'Space Mono',monospace;font-size:13px;
+  letter-spacing:3px;color:var(--ink-light);
+  margin-bottom:32px;
+}
+.s2-text p{
+  font-size:16px;color:var(--ink-soft);
+  line-height:2;
+  margin-bottom:16px;
+}
+.s2-text .hl{
+  background:linear-gradient(120deg, transparent, rgba(255,46,126,0.18), transparent);
+  padding:2px 6px;border-radius:4px;
+  color:var(--pink-soft);font-weight:500;
+}
+.id-stack{
+  display:flex;flex-direction:column;gap:14px;
+  margin-top:28px;
+}
+.id-row{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  transition:all 0.3s var(--ease);
+}
+.id-row:hover{
+  border-color:var(--border-pink);
+  transform:translateX(8px);
+  box-shadow:0 0 20px rgba(255,46,126,0.2);
+}
+.id-row .ic{
+  width:42px;height:42px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.id-row .ic.pink{background:rgba(255,46,126,0.12);color:var(--pink)}
+.id-row .ic.purple{background:rgba(160,76,255,0.12);color:var(--purple-soft)}
+.id-row .ic.cyan{background:rgba(0,240,255,0.1);color:var(--cyan)}
+.id-row .txt{font-size:14.5px;color:var(--ink-soft)}
+.id-row .txt strong{color:var(--ink);font-weight:600}
+.s2-photo{
+  position:relative;
+  border-radius:24px;
+  background:var(--surface);
+  border:2px solid var(--pink);
+  box-shadow:0 0 32px var(--pink-glow), var(--shadow-soft);
+  overflow:hidden;
+  height:660px;
+  transform:rotate(2deg);
+  transition:transform 0.4s var(--ease);
+}
+.s2-photo:hover{transform:rotate(0)}
+.s2-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.s2-photo .label{
+  position:absolute;bottom:18px;left:18px;
+  background:rgba(11,7,18,0.85);
+  padding:8px 14px;
+  border-radius:10px;
+  font-family:'Space Mono',monospace;font-size:12px;
+  color:var(--pink-soft);
+  border:1px solid var(--border-pink);
+}
+.s2-photo .corner-tag{
+  position:absolute;top:18px;right:18px;
+  background:var(--cyan);
+  color:#0B0712;
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  font-weight:700;
+  padding:4px 10px;
+  border-radius:6px;
+  letter-spacing:1.5px;
+}
+
+/* ============ Slide 3 任务系统 ============ */
+.s-header{
+  text-align:center;
+  margin-bottom:48px;
+}
+.s-header .ch{
+  font-family:'ZCOOL KuaiLe',sans-serif;
+  font-size:48px;
+  background:linear-gradient(135deg, var(--pink), var(--purple));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:8px;
+}
+.s-header .en{
+  font-family:'Space Mono',monospace;font-size:12px;
+  letter-spacing:3px;color:var(--ink-light);
+}
+.task-grid{
+  max-width:1180px;width:100%;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+}
+.task-card{padding:32px 28px}
+.task-card .ttl-row{
+  display:flex;align-items:center;gap:14px;margin-bottom:16px;
+}
+.task-card .ic{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+}
+.task-card .ic.t1{background:rgba(255,46,126,0.12);color:var(--pink)}
+.task-card .ic.t2{background:rgba(160,76,255,0.12);color:var(--purple-soft)}
+.task-card .ic.t3{background:rgba(0,240,255,0.1);color:var(--cyan)}
+.task-list{list-style:none;margin-top:14px}
+.task-list li{
+  font-size:14px;color:var(--ink-soft);
+  padding:6px 0 6px 22px;
+  position:relative;
+}
+.task-list li::before{
+  content:'▸';position:absolute;left:0;top:6px;
+  color:var(--pink);font-weight:700;
+}
+.task-card.t2 .task-list li::before{color:var(--purple-soft)}
+.task-card.t3 .task-list li::before{color:var(--cyan)}
+
+/* ============ Slide 4 沟通 ============ */
+#s4{
+  background:linear-gradient(180deg, transparent, rgba(160,76,255,0.04) 50%, transparent);
+}
+.s4-container{
+  max-width:1180px;width:100%;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:56px;
+  align-items:center;
+}
+.s4-photo{
+  border-radius:20px;
+  background:var(--surface);
+  border:2px solid var(--purple);
+  box-shadow:0 0 28px rgba(160,76,255,0.4);
+  overflow:hidden;
+  height:600px;
+  transform:rotate(-1.5deg);
+  position:relative;
+  transition:transform 0.4s var(--ease);
+}
+.s4-photo:hover{transform:rotate(0)}
+.s4-photo img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.s4-photo .label{
+  position:absolute;bottom:18px;left:18px;
+  background:rgba(11,7,18,0.85);
+  padding:8px 14px;border-radius:10px;
+  font-family:'Space Mono',monospace;font-size:12px;
+  color:var(--purple-soft);
+  border:1px solid rgba(160,76,255,0.35);
+}
+.comm-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+}
+.comm-cell{
+  padding:18px 20px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  transition:all 0.3s var(--ease);
+}
+.comm-cell:hover{
+  border-color:var(--border-pink);
+  transform:translateY(-2px);
+}
+.comm-cell .lbl{
+  font-family:'Space Mono',monospace;font-size:10px;
+  color:var(--pink-soft);letter-spacing:1.5px;
+  margin-bottom:8px;
+}
+.comm-cell .ct{
+  font-size:13.5px;color:var(--ink-soft);
+  line-height:1.7;
+}
+
+/* ============ Slide 5 反馈·压力 ============ */
+#s5{
+  background:linear-gradient(180deg, transparent, rgba(255,179,71,0.03) 50%, transparent);
+}
+.s5-container{
+  max-width:1180px;width:100%;margin:0 auto;
+  display:grid;grid-template-columns:0.9fr 1.1fr;gap:40px;
+  align-items:start;
+}
+.s5-photo{
+  border-radius:20px;
+  background:var(--surface);
+  border:2px solid var(--warm);
+  box-shadow:0 0 24px rgba(255,179,71,0.25);
+  overflow:hidden;
+  height:640px;
+  transform:rotate(1.5deg);
+  position:relative;
+  transition:transform 0.4s var(--ease);
+}
+.s5-photo:hover{transform:rotate(0)}
+.s5-photo img{width:100%;height:100%;object-fit:cover}
+.s5-photo .label{
+  position:absolute;bottom:18px;left:18px;
+  background:rgba(11,7,18,0.85);
+  padding:8px 14px;border-radius:10px;
+  font-family:'Space Mono',monospace;font-size:12px;
+  color:var(--warm);
+  border:1px solid rgba(255,179,71,0.35);
+}
+.s5-stack{display:flex;flex-direction:column;gap:18px}
+.s5-block{
+  padding:22px 24px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  position:relative;
+}
+.s5-block .badge{
+  display:inline-block;
+  font-family:'Space Mono',monospace;font-size:11px;
+  letter-spacing:2px;
+  padding:3px 10px;border-radius:10px;
+  margin-bottom:12px;
+}
+.b-pink{color:var(--pink-soft);background:rgba(255,46,126,0.1)}
+.b-purple{color:var(--purple-soft);background:rgba(160,76,255,0.1)}
+.b-cyan{color:var(--cyan);background:rgba(0,240,255,0.08)}
+.s5-block .ttl{
+  font-family:'ZCOOL KuaiLe',sans-serif;font-size:20px;
+  color:var(--ink);margin-bottom:10px;
+}
+.s5-block .desc{font-size:14px;color:var(--ink-soft);line-height:1.8}
+.signal{
+  display:flex;gap:4px;margin-top:14px;
+}
+.signal .bar{
+  flex:1;height:4px;border-radius:2px;
+  background:var(--border);
+}
+.signal .bar.on{background:var(--pink);box-shadow:0 0 6px var(--pink-glow)}
+
+/* ============ Slide 6 支持 ============ */
+.support-grid{
+  max-width:1180px;width:100%;margin:0 auto;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+}
+.sup-card{
+  padding:24px 26px;
+  display:flex;gap:18px;
+  align-items:flex-start;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  transition:all 0.3s var(--ease);
+}
+.sup-card:hover{
+  border-color:var(--border-pink);
+  transform:translateY(-4px);
+  box-shadow:0 0 24px rgba(255,46,126,0.2);
+}
+.sup-card .ic{
+  width:50px;height:50px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+}
+.sup-card.s1 .ic{background:rgba(255,46,126,0.12);color:var(--pink)}
+.sup-card.s2 .ic{background:rgba(160,76,255,0.12);color:var(--purple-soft)}
+.sup-card.s3 .ic{background:rgba(0,240,255,0.1);color:var(--cyan)}
+.sup-card.s4 .ic{background:rgba(255,179,71,0.1);color:var(--warm)}
+.sup-card .ct{flex:1}
+.sup-card .ttl{
+  font-family:'ZCOOL KuaiLe',sans-serif;font-size:19px;
+  color:var(--ink);margin-bottom:8px;
+}
+.sup-card .desc{font-size:14px;color:var(--ink-soft);line-height:1.8}
+
+/* ============ Slide 7 学习·创作 ============ */
+.learn-container{
+  max-width:980px;width:100%;margin:0 auto;
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  grid-template-rows:auto auto;
+  gap:20px;
+}
+.learn-main{
+  grid-row:1/3;
+  border-radius:20px;
+  background:var(--surface);
+  border:2px solid var(--pink);
+  box-shadow:0 0 32px var(--pink-glow);
+  overflow:hidden;
+  height:740px;
+  position:relative;
+}
+.learn-main img{width:100%;height:100%;object-fit:cover}
+.learn-main .label{
+  position:absolute;bottom:18px;left:18px;
+  background:rgba(11,7,18,0.85);
+  padding:10px 16px;border-radius:10px;
+  font-family:'Space Mono',monospace;font-size:13px;
+  color:var(--pink-soft);
+  border:1px solid var(--border-pink);
+}
+.learn-side{
+  border-radius:16px;
+  background:var(--surface);
+  overflow:hidden;
+  height:360px;
+  position:relative;
+  border:1.5px solid rgba(160,76,255,0.5);
+  box-shadow:0 0 20px rgba(160,76,255,0.2);
+}
+.learn-side img{width:100%;height:100%;object-fit:cover}
+.learn-side.s2{height:360px;border-color:rgba(0,240,255,0.5)}
+.learn-side .label{
+  position:absolute;bottom:12px;left:12px;
+  background:rgba(11,7,18,0.85);
+  padding:6px 12px;border-radius:8px;
+  font-family:'Space Mono',monospace;font-size:11px;
+  border:1px solid var(--border);
+}
+.learn-side .l1{color:var(--purple-soft);border-color:rgba(160,76,255,0.35)}
+.learn-side .l2{color:var(--cyan);border-color:rgba(0,240,255,0.35)}
+
+/* ============ Slide 8 运动·探索 ============ */
+.sport-grid{
+  max-width:1180px;width:100%;margin:0 auto;
+  display:grid;
+  grid-template-columns:1.3fr 1fr 1fr;
+  grid-template-rows:340px 340px;
+  gap:16px;
+}
+.sp-cell{
+  border-radius:16px;
+  background:var(--surface);
+  overflow:hidden;
+  position:relative;
+  transition:all 0.4s var(--ease);
+}
+.sp-cell:hover{transform:translateY(-4px)}
+.sp-cell img{width:100%;height:100%;object-fit:cover;object-position:center}
+.sp-cell .label{
+  position:absolute;bottom:12px;left:12px;z-index:3;
+  background:rgba(11,7,18,0.85);
+  padding:6px 12px;border-radius:8px;
+  font-family:'Space Mono',monospace;font-size:11px;
+  color:var(--pink-soft);
+  border:1px solid var(--border-pink);
+}
+.sp-cell::after{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,transparent 55%,rgba(11,7,18,0.45));
+  pointer-events:none;
+}
+.sp-main{
+  grid-column:1/2;
+  grid-row:1/3;
+  border:2px solid var(--pink);
+  box-shadow:0 0 24px var(--pink-glow);
+}
+.sp-tall{
+  border:1.5px solid rgba(0,240,255,0.4);
+}
+.sp-md{
+  border:1.5px solid rgba(160,76,255,0.4);
+}
+.sp-lg3{
+  border:1.5px solid rgba(255,179,71,0.4);
+}
+.sp-tall2{
+  border:1.5px solid rgba(255,46,126,0.3);
+}
+
+/* ============ Slide 9 朋友·世界 ============ */
+.world-container{
+  max-width:980px;width:100%;margin:0 auto;
+  display:grid;
+  grid-template-columns:1.3fr 1fr;
+  gap:20px;
+  align-items:start;
+}
+.world-main{
+  border-radius:20px;
+  background:var(--surface);
+  border:2px solid var(--warm);
+  box-shadow:0 0 28px rgba(255,179,71,0.3);
+  overflow:hidden;
+  height:820px;
+  position:relative;
+}
+.world-main img{width:100%;height:100%;object-fit:cover}
+.world-main .quote{
+  position:absolute;left:24px;bottom:24px;right:24px;
+  background:rgba(11,7,18,0.88);
+  padding:18px 22px;
+  border-radius:14px;
+  border:1px solid rgba(255,179,71,0.35);
+  backdrop-filter:blur(8px);
+}
+.world-main .quote .q{
+  font-family:'ZCOOL KuaiLe',sans-serif;
+  font-size:18px;
+  color:var(--warm);
+  margin-bottom:6px;
+}
+.world-main .quote .a{
+  font-size:12px;color:var(--ink-light);
+  font-family:'Space Mono',monospace;letter-spacing:1.5px;
+}
+.world-side{
+  display:flex;flex-direction:column;gap:16px;
+}
+.ws-cell{
+  border-radius:14px;
+  background:var(--surface);
+  overflow:hidden;
+  height:255px;
+  position:relative;
+  border:1.5px solid var(--border);
+  transition:transform 0.3s var(--ease);
+}
+.ws-cell:hover{transform:scale(1.02)}
+.ws-cell img{width:100%;height:100%;object-fit:cover}
+.ws-cell .label{
+  position:absolute;bottom:10px;left:10px;
+  background:rgba(11,7,18,0.85);
+  padding:5px 10px;border-radius:6px;
+  font-family:'Space Mono',monospace;font-size:10px;
+  color:var(--pink-soft);
+  border:1px solid var(--border-pink);
+}
+
+/* ============ Slide 10 画廊 ============ */
+.gallery-wrap{
+  max-width:1180px;width:100%;margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+}
+.g-cell{
+  position:relative;
+  border-radius:16px;
+  background:var(--surface);
+  overflow:hidden;
+  height:360px;
+  border:1.5px solid var(--border);
+  transition:all 0.4s var(--ease);
+}
+.g-cell:nth-child(1){transform:rotate(-2deg);border-color:var(--border-pink)}
+.g-cell:nth-child(2){transform:rotate(1.5deg);border-color:rgba(160,76,255,0.4)}
+.g-cell:nth-child(3){transform:rotate(-1deg);border-color:rgba(0,240,255,0.4)}
+.g-cell:nth-child(4){transform:rotate(2deg);border-color:rgba(255,179,71,0.4)}
+.g-cell:hover{
+  transform:rotate(0) scale(1.04);
+  box-shadow:0 0 24px rgba(255,46,126,0.3);
+  z-index:5;
+}
+.g-cell img{width:100%;height:100%;object-fit:cover}
+.g-cell .tag{
+  position:absolute;top:10px;left:10px;
+  background:rgba(11,7,18,0.85);
+  padding:4px 10px;border-radius:6px;
+  font-family:'Space Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;
+}
+.g-cell .t-pink{color:var(--pink-soft);border:1px solid var(--border-pink)}
+.g-cell .t-purple{color:var(--purple-soft);border:1px solid rgba(160,76,255,0.4)}
+.g-cell .t-cyan{color:var(--cyan);border:1px solid rgba(0,240,255,0.35)}
+.g-cell .t-warm{color:var(--warm);border:1px solid rgba(255,179,71,0.35)}
+.g-cell .cap{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:14px;
+  background:linear-gradient(180deg, transparent, rgba(11,7,18,0.9));
+  font-size:13px;color:var(--ink-soft);
+}
+
+/* ============ Slide 11 技能·角色 ============ */
+.skill-container{
+  max-width:1180px;width:100%;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:32px;
+  align-items:stretch;
+}
+.skill-stack{display:flex;flex-direction:column;gap:18px}
+.skill-card{padding:24px 28px}
+.skill-card .head{
+  display:flex;align-items:center;gap:14px;margin-bottom:14px;
+}
+.skill-card .ic{
+  width:46px;height:46px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+}
+.skill-card .ttl{
+  font-family:'ZCOOL KuaiLe',sans-serif;font-size:22px;color:var(--ink);
+}
+.skill-tags{
+  display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;
+}
+.skill-tag{
+  padding:5px 12px;
+  border-radius:14px;
+  font-size:12.5px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  color:var(--ink-soft);
+}
+/* Kami 风格角色卡 */
+.kami-card{
+  padding:36px 32px;
+  background:linear-gradient(160deg, #F3EFE4 0%, #EAE2D0 100%);
+  border-radius:20px;
+  position:relative;
+  overflow:hidden;
+  color:#1B365D;
+  display:flex;flex-direction:column;
+  border:1px solid #D9D0BD;
+  box-shadow:0 16px 48px rgba(0,0,0,0.4);
+}
+.kami-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:#1B365D;
+}
+.kami-card .kbd{
+  font-family:'Space Mono',monospace;font-size:11px;
+  letter-spacing:3px;color:#1B365D;opacity:0.55;
+  margin-bottom:14px;
+}
+.kami-card .hdr{
+  display:flex;align-items:center;gap:18px;margin-bottom:20px;
+}
+.kami-card .avatar{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg, #1B365D, #2A4A7F);
+  border:3px solid #1B365D;
+  overflow:hidden;flex-shrink:0;
+}
+.kami-card .avatar img{width:100%;height:100%;object-fit:cover}
+.kami-card .nm{
+  font-family:'Noto Serif SC',serif;
+  font-size:28px;font-weight:900;
+  color:#1B365D;
+  line-height:1.1;
+}
+.kami-card .sub{
+  font-size:12px;color:#1B365D;opacity:0.6;
+  font-family:'Space Mono',monospace;letter-spacing:1.5px;
+}
+.kami-card .divi{
+  height:1px;background:#1B365D;opacity:0.18;
+  margin:14px 0;
+}
+.kami-card .sum{
+  font-family:'Noto Serif SC',serif;
+  font-size:16px;line-height:1.8;
+  color:#1B365D;
+  font-style:italic;
+  margin-bottom:18px;
+}
+.kami-card .sum .em{
+  font-style:normal;font-weight:700;
+  background:rgba(27,54,93,0.08);
+  padding:1px 6px;border-radius:3px;
+}
+.kami-card .info{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  margin-bottom:18px;
+}
+.kami-card .info .lbl{
+  font-size:10px;color:#1B365D;opacity:0.5;
+  font-family:'Space Mono',monospace;letter-spacing:1.5px;
+  margin-bottom:4px;
+}
+.kami-card .info .val{
+  font-size:14px;color:#1B365D;font-weight:500;
+}
+.kami-card .cmd{
+  background:#1B365D;color:#F5EFE4;
+  padding:14px 18px;border-radius:10px;
+  margin-bottom:14px;
+}
+.kami-card .cmd .lbl{
+  font-size:10px;opacity:0.6;
+  font-family:'Space Mono',monospace;letter-spacing:2px;
+  margin-bottom:6px;
+}
+.kami-card .cmd .txt{
+  font-size:14px;line-height:1.7;
+  color:#F5EFE4;
+}
+.kami-card .act{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 22px;background:#1B365D;color:#F5EFE4;
+  border-radius:10px;
+  text-decoration:none;font-size:14px;font-weight:600;
+  transition:all 0.3s var(--ease);
+  margin-top:auto;
+}
+.kami-card .act:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(27,54,93,0.3)}
+
+/* ============ Slide 12 Footer ============ */
+.footer-wrap{
+  max-width:680px;width:100%;
+  margin:0 auto;text-align:center;
+}
+.footer-wrap .ch{
+  font-family:'ZCOOL KuaiLe',sans-serif;
+  font-size:48px;
+  background:linear-gradient(135deg, var(--pink), var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:18px;
+}
+.footer-wrap p{
+  font-size:16px;color:var(--ink-soft);
+  line-height:1.9;margin-bottom:24px;
+}
+.footer-act{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 32px;
+  background:linear-gradient(135deg, var(--pink), var(--purple));
+  color:#FFF;
+  border-radius:30px;
+  text-decoration:none;font-size:15px;font-weight:600;
+  transition:all 0.3s var(--ease);
+}
+.footer-act:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,46,126,0.4)}
+.footer-meta{
+  margin-top:48px;
+  font-family:'Space Mono',monospace;font-size:11px;
+  color:var(--ink-light);letter-spacing:1.5px;
+}
+
+/* ============ 动画 ============ */
+@keyframes pulse{
+  0%,100%{opacity:1}
+  50%{opacity:0.4}
+}
+@keyframes floatMove{
+  0%,100%{transform:translate(0,0)}
+  50%{transform:translate(20px,-30px)}
+}
+@keyframes bounce{
+  0%,100%{transform:rotate(45deg) translate(0,0)}
+  50%{transform:rotate(45deg) translate(6px,6px)}
+}
+.reveal{
+  opacity:0;
+  transform:translateY(30px);
+  transition:all 0.8s var(--ease);
+}
+.reveal.visible{
+  opacity:1;transform:translateY(0);
+}
+
+/* ============ 照片定位与渐变层 ============ */
+.slide img{object-position:center center}
+.learn-main img{object-position:center center}
+.learn-side.s2 img{object-position:center top}
+/* 底部渐变叠加 - 增强质感与标签可读性 */
+.s2-photo::after,.s4-photo::after,.s5-photo::after,
+.learn-main::after,.learn-side::after,
+.world-main::after,.ws-cell::after,.g-cell::after{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,transparent 50%,rgba(11,7,18,0.5));
+  pointer-events:none;
+}
+/* 标签层级提升至渐变之上 */
+.s2-photo .label,.s2-photo .corner-tag,
+.s4-photo .label,.s5-photo .label,
+.learn-main .label,.learn-side .label,
+.world-main .quote,.ws-cell .label,
+.g-cell .tag,.g-cell .cap{z-index:3}
+
+/* ============ 响应式 ============ */
+@media(max-width:980px){
+  .hero-container{grid-template-columns:1fr;gap:40px}
+  .hero-name{font-size:88px}
+  .hero-cn{font-size:22px}
+  .s2-container,.s4-container,.s5-container,.skill-container{grid-template-columns:1fr}
+  .task-grid,.support-grid{grid-template-columns:1fr 1fr}
+  .learn-container{grid-template-columns:1fr;grid-template-rows:auto auto auto}
+  .learn-main{grid-row:auto;height:380px}
+  .sport-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,260px);gap:12px}
+  .sp-main{grid-column:1/3;grid-row:auto}
+  .world-container{grid-template-columns:1fr}
+  .gallery-wrap{grid-template-columns:1fr 1fr}
+  .nav-dots{display:none}
+  .hero-photos{height:480px}
+  .hero-mini{width:60%;height:160px}
+  .s4-photo{height:520px}
+  .s5-photo{height:480px}
+  .s2-photo{height:500px}
+  .world-main{height:520px}
+  .ws-cell{height:200px}
+  .slide{padding:96px 24px 60px}
+}
+@media(max-width:640px){
+  .task-grid,.support-grid,.gallery-wrap{grid-template-columns:1fr}
+  .sport-grid{grid-template-columns:1fr}
+  .hero-name{font-size:64px}
+  .hero-cn{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部 HUD -->
+<div class="hud-top">
+  <div class="left">
+    <span><span class="dot"></span><span class="label">PROFILE</span> · <span class="val">ONLINE</span></span>
+    <span><span class="label">CHARACTER</span> · <span class="val">TT</span></span>
+  </div>
+  <div class="right">
+    <span><span class="label">VER</span> · <span class="val">6.0</span></span>
+    <span><span class="label">MODE</span> · <span class="val">CRAFT</span></span>
+  </div>
+</div>
+
+<!-- 进度条 -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- 导航 -->
+<div class="nav-dots">
+  <div class="nav-dot active" data-target="s1" data-label="首页"></div>
+  <div class="nav-dot" data-target="s2" data-label="身份"></div>
+  <div class="nav-dot" data-target="s3" data-label="任务"></div>
+  <div class="nav-dot" data-target="s4" data-label="沟通"></div>
+  <div class="nav-dot" data-target="s5" data-label="反馈·压力"></div>
+  <div class="nav-dot" data-target="s6" data-label="支持"></div>
+  <div class="nav-dot" data-target="s7" data-label="创作"></div>
+  <div class="nav-dot" data-target="s8" data-label="运动"></div>
+  <div class="nav-dot" data-target="s9" data-label="世界"></div>
+  <div class="nav-dot" data-target="s10" data-label="画廊"></div>
+  <div class="nav-dot" data-target="s10b" data-label="作品"></div>
+  <div class="nav-dot" data-target="s11" data-label="角色卡"></div>
+  <div class="nav-dot" data-target="s12" data-label="感谢"></div>
+</div>
+
+<!-- ============ Slide 1 Hero ============ -->
+<section class="slide" id="s1">
+  <div class="hero-bg">
+    <div class="float-shape fs1"></div>
+    <div class="float-shape fs2"></div>
+    <div class="float-shape fs3"></div>
+    <div class="float-shape fs4"></div>
+  </div>
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 01 OF 13</div>
+  <div class="slide-tag">// HERO</div>
+
+  <div class="hero-container">
+    <div class="hero-photos reveal">
+      <div class="hero-main">
+        <img src="images/02-portrait-piano.jpg" alt="形象照">
+      </div>
+      <div class="hero-mini">
+        <img src="images/17-car-selfie.jpg" alt="车内">
+      </div>
+    </div>
+    <div class="hero-text reveal">
+      <div class="hero-system">▸ CHARACTER FILE / 张甜湉</div>
+      <h1 class="hero-name">TT</h1>
+      <div class="hero-cn">张甜湉</div>
+      <div class="hero-pinyin">T I A N T I A N · Z H A N G</div>
+      <p class="hero-sub">
+        我是互联网与 AI 时代的一名见证者，一个喜欢写作的人，有一颗理性的脑和一颗感性的心。喜欢用数据和逻辑把事情想清楚，也喜欢用文字把感受写出来——这两件事在我这里并不矛盾。
+      </p>
+      <div class="hero-tags">
+        <span class="hero-tag">兼具理性 × 感性</span>
+        <span class="hero-tag">长期奔向超级个体</span>
+        <span class="hero-tag">好奇心 ∞</span>
+      </div>
+      <div class="hero-stat">
+        <div class="item">
+          <div class="big">AI</div>
+          <div class="sm">PIVOTING NOW</div>
+        </div>
+        <div class="item">
+          <div class="big">1+AI</div>
+          <div class="sm">WORK MODE</div>
+        </div>
+        <div class="item">
+          <div class="big">∞</div>
+          <div class="sm">CURIOSITY</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>PRESS SCROLL ▾</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ============ Slide 2 身份 ============ -->
+<section class="slide" id="s2">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 02 OF 13</div>
+  <div class="slide-tag">// IDENTITY</div>
+
+  <div class="s2-container">
+    <div class="s2-photo reveal">
+      <div class="corner-tag">IMG_01</div>
+      <img src="images/01-portrait-arwana.jpg" alt="海边">
+      <div class="label">// BEACH MOMENT · 海边的风</div>
+    </div>
+    <div class="s2-text reveal">
+      <h2 class="ch">我是谁</h2>
+      <div class="en">// ABOUT TT · 一份小小的自白</div>
+      <p>
+        大家好，我是 <span class="hl">TT</span>。从财务的报表和数字出发，经过写作的练习场，再走进 AI 的实战——这条路径每一步都算数。喜欢用数据和逻辑把事情想清楚，也喜欢用文字把感受表达出来，这两件事在我这里并不矛盾。
+      </p>
+      <p>
+        来这个项目，是想补一段真实的 AI 实战经历，也想认认真真把 AI Agent 这套东西弄懂，把一段段经历做成拿得出手的作品集。
+      </p>
+      <p>
+        更远一点的小心思是——想成为一个 <span class="hl">"超级个体"</span>，能一个人 + 一些得力的工具，做成一些原本要靠一整个团队才能做的事。
+      </p>
+      <div class="id-stack">
+        <div class="id-row">
+          <div class="ic pink">✦</div>
+          <div class="txt"><strong>研究生在读</strong> · 正在把 AI 用进日常的人</div>
+        </div>
+        <div class="id-row">
+          <div class="ic purple">✦</div>
+          <div class="txt"><strong>爱写作的人</strong> · 把理性的脑和感性的心都用上</div>
+        </div>
+        <div class="id-row">
+          <div class="ic cyan">✦</div>
+          <div class="txt"><strong>正在生长的超级个体</strong> · 一个人 + AI = 一支队伍</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 3 任务 ============ -->
+<section class="slide" id="s3">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 03 OF 13</div>
+  <div class="slide-tag">// TASK SYSTEM</div>
+
+  <div class="s-header reveal">
+    <h2 class="ch">我的任务系统</h2>
+    <div class="en">// WHEN I RECEIVE A TASK · 一点点我的小心思</div>
+  </div>
+  <div class="task-grid">
+    <div class="card task-card t1 reveal">
+      <div class="ttl-row">
+        <div class="ic t1">✦</div>
+        <div class="ttl">开工前的五个小心愿</div>
+      </div>
+      <div class="desc">
+        如果你愿意为我提前告诉我这五件事，我就会比较安心、比较快地上手——
+      </div>
+      <ul class="task-list">
+        <li>最终要交付的是什么</li>
+        <li>什么时候要交</li>
+        <li>完成它需要什么条件</li>
+        <li>我负责哪一块</li>
+        <li>有没有可以参考的案例</li>
+      </ul>
+      <div class="desc" style="margin-top:14px">信息齐了，心里有数，进入状态就快了。</div>
+    </div>
+
+    <div class="card task-card t2 reveal">
+      <div class="ttl-row">
+        <div class="ic t2">✦</div>
+        <div class="ttl">我的小节奏</div>
+      </div>
+      <div class="desc">
+        我习惯 <strong style="color:var(--purple-soft)">"先粗后细"</strong>——先把东西大致做出来，再慢慢打磨。<br>完成比完美重要，是我的信条。
+      </div>
+      <div class="desc" style="margin-top:14px">状态好、不拖沓的日子，1-3 天能出第一版。</div>
+      <div class="desc" style="margin-top:14px">我比较高效的小条件：</div>
+      <ul class="task-list">
+        <li>对事情真的有兴趣</li>
+        <li>一点点适度的紧迫感</li>
+        <li>能看到做出来的回报</li>
+      </ul>
+    </div>
+
+    <div class="card task-card t3 reveal">
+      <div class="ttl-row">
+        <div class="ic t3">✦</div>
+        <div class="ttl">我心里的"可以交"标准</div>
+      </div>
+      <div class="desc">
+        自己来回看几遍，挑不出错；再换个角度想"别人收到会不会觉得还行"，就放心交了。
+      </div>
+      <div class="desc" style="margin-top:14px;font-weight:500;color:var(--cyan)">
+        AI 是我工作中的全能小搭档——
+      </div>
+      <ul class="task-list">
+        <li>帮我判断轻重缓急</li>
+        <li>搭框架、抠细节</li>
+        <li>查漏补缺、补信息差</li>
+        <li>优化表达、整理归档</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 4 沟通 ============ -->
+<section class="slide" id="s4">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 04 OF 13</div>
+  <div class="slide-tag">// COMMUNICATION</div>
+
+  <div class="s4-container">
+    <div class="s4-photo reveal">
+      <img src="images/22-cinema-3dglasses.jpg" alt="3D眼镜">
+      <div class="label">// CINEMA NIGHT · 沉浸在自己的小宇宙里</div>
+    </div>
+    <div class="reveal">
+      <div class="s-header" style="text-align:left;margin-bottom:32px">
+        <h2 class="ch">我的沟通方式</h2>
+        <div class="en">// HOW WE TALK</div>
+      </div>
+      <div class="comm-grid">
+        <div class="comm-cell">
+          <div class="lbl">// 习惯</div>
+          <div class="ct">语音或语音转文字，<strong style="color:var(--ink)">边说边想</strong>，慢慢把思绪理出来。紧张的时候语速会自然变快一些。</div>
+        </div>
+        <div class="comm-cell">
+          <div class="lbl">// 最舒服的方式</div>
+          <div class="ct">直接告诉我需求和 DDL，<strong style="color:var(--ink)">别让太多杂乱信息干扰</strong>。工作场景里的语音麻烦尽量说话清晰一点～</div>
+        </div>
+        <div class="comm-cell">
+          <div class="lbl">// 我不太擅长的</div>
+          <div class="ct">人多抢话的场合容易插不上话；别人绕弯子甚至带点刺的时候我会 <strong style="color:var(--ink)">后知后觉</strong>。请多包涵。</div>
+        </div>
+        <div class="comm-cell">
+          <div class="lbl">// 信息颗粒度</div>
+          <div class="ct">结论先行，背景细节跟上。低信息量的纯寒暄反而让我有点累，<strong style="color:var(--ink)">希望是舒缓语气里的高效</strong>。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 5 反馈·压力 ============ -->
+<section class="slide" id="s5">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 05 OF 13</div>
+  <div class="slide-tag">// FEEDBACK × STRESS</div>
+
+  <div class="s5-container">
+    <div class="s5-photo reveal">
+      <img src="images/20-restaurant-pink.jpg" alt="绿墙餐厅">
+      <div class="label">// GREEN WALL · 那个时候的我</div>
+    </div>
+    <div class="s5-stack reveal">
+      <div class="s5-block">
+        <div class="badge b-pink">// FEEDBACK 给别人的</div>
+        <div class="ttl">习惯先说问题再补一句肯定</div>
+        <div class="desc">把难处先解决，后面的欣赏会更真诚一些。比起"欲抑先扬"的套路，我更喜欢直接、舒缓、不委屈任何一方的方式。</div>
+      </div>
+      <div class="s5-block">
+        <div class="badge b-purple">// FEEDBACK 希望收到的</div>
+        <div class="ttl">具体一点，告诉我哪里能改</div>
+        <div class="desc">语气舒缓、就事论事、再自然一点就最好了。如果涉及到人格层面，消化的周期会长一些，请多给我一点时间。</div>
+      </div>
+      <div class="s5-block">
+        <div class="badge b-cyan">// STRESS 压力下的我</div>
+        <div class="ttl">自己察觉会慢一拍，队友可以这样观察——</div>
+        <div class="desc">回消息变慢、琢磨时间变长、开口变少、整个人开始拧巴不自信。如果真到这一步，<strong style="color:var(--warm)">请帮我分担一些任务，比一百句"你还好吗"都管用</strong>。</div>
+        <div class="signal">
+          <div class="bar on"></div>
+          <div class="bar on"></div>
+          <div class="bar on"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 6 支持 ============ -->
+<section class="slide" id="s6">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 06 OF 13</div>
+  <div class="slide-tag">// SUPPORT SYSTEM</div>
+
+  <div class="s-header reveal">
+    <h2 class="ch">让我发挥得更好的支持</h2>
+    <div class="en">// HOW TO HELP ME DO MY BEST</div>
+  </div>
+  <div class="support-grid">
+    <div class="sup-card s1 reveal">
+      <div class="ic">✦</div>
+      <div class="ct">
+        <div class="ttl">信息支持</div>
+        <div class="desc">永远是个目标导向的人——给我一个清晰的终点，再附上足够的背景材料和参考，我就能开始创造。最重要的是看到前方的目标。</div>
+      </div>
+    </div>
+    <div class="sup-card s2 reveal">
+      <div class="ic">✦</div>
+      <div class="ct">
+        <div class="ttl">资源支持</div>
+        <div class="desc">模板工具推荐、时间上的小弹性、靠谱的软件和平台、前辈的经验和我自己过往的成败复盘——再加上一份"相信相信的力量"。</div>
+      </div>
+    </div>
+    <div class="sup-card s3 reveal">
+      <div class="ic">✦</div>
+      <div class="ct">
+        <div class="ttl">人际支持</div>
+        <div class="desc">希望身边有一个像"小灵通"那样的前辈：信息靠谱、方向精准、情商阅历都高我一阶但又不远到我够不着。一起聊、一起想，是最踏实的事。</div>
+      </div>
+    </div>
+    <div class="sup-card s4 reveal">
+      <div class="ic">✦</div>
+      <div class="ct">
+        <div class="ttl">我能给别人的</div>
+        <div class="desc">我更愿意做"支持型"的角色——粘合团队、连接技术与业务、出谋划策但不直接承担最大拍板压力。学者型 / 创造型的帮忙手，是我最能创造价值的位置。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 7 学习·创作 ============ -->
+<section class="slide" id="s7">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 07 OF 13</div>
+  <div class="slide-tag">// LEARN × CREATE</div>
+
+  <div class="s-header reveal">
+    <h2 class="ch">学习与创作</h2>
+    <div class="en">// LEARNING MOMENTS · 把读到的东西慢慢写下来</div>
+  </div>
+  <div class="learn-container">
+    <div class="learn-main reveal">
+      <img src="images/10-extra-mirror.jpg" alt="镜子">
+      <div class="label">// MIRROR NO.01 · 元气满满却之不恭</div>
+    </div>
+    <div class="learn-side reveal">
+      <img src="images/14-graduation.jpg" alt="毕业">
+      <div class="label l1">// MOMENT NO.02 · 一个人的毕业典礼</div>
+    </div>
+    <div class="learn-side s2 reveal">
+      <img src="images/04-writing-laptop.jpg" alt="写作">
+      <div class="label l2">// WRITING NO.03 · 写点东西的下午</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 8 运动·探索 ============ -->
+<section class="slide" id="s8">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 08 OF 13</div>
+  <div class="slide-tag">// MOVE × EXPLORE</div>
+
+  <div class="s-header reveal">
+    <h2 class="ch">运动与探索</h2>
+    <div class="en">// WHERE I'VE BEEN · 让身体和世界对话</div>
+  </div>
+  <div class="sport-grid">
+    <div class="sp-cell sp-main reveal">
+      <img src="images/05-sport-diving.jpg" alt="潜水">
+      <div class="label">// DIVE 01 · 在水下的安静</div>
+    </div>
+    <div class="sp-cell sp-tall reveal">
+      <img src="images/06-sport-surfing.jpg" alt="冲浪">
+      <div class="label">// SURF 02 · 浪头上的一秒</div>
+    </div>
+    <div class="sp-cell sp-md reveal">
+      <img src="images/19-salon-mirror.jpg" alt="理发">
+      <div class="label">// CUT 03 · 一次重新开始的勇敢</div>
+    </div>
+    <div class="sp-cell sp-lg3 reveal">
+      <img src="images/11-extra-seaside.jpg" alt="海边">
+      <div class="label">// SEA 04 · 海边的风一直吹</div>
+    </div>
+    <div class="sp-cell sp-tall2 reveal">
+      <img src="images/12-extra-sunset.jpg" alt="夕阳">
+      <div class="label">// SUNSET 05 · 走到天色慢下来</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 9 朋友·世界 ============ -->
+<section class="slide" id="s9">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 09 OF 13</div>
+  <div class="slide-tag">// FRIENDS × WORLD</div>
+
+  <div class="s-header reveal">
+    <h2 class="ch">朋友与世界</h2>
+    <div class="en">// THE PEOPLE × THE PLACES · 被世界温柔地对待</div>
+  </div>
+  <div class="world-container">
+    <div class="world-main reveal">
+      <img src="images/13-thailand-night.jpg" alt="泰国">
+      <div class="quote">
+        <div class="q">"人生是旷野，世界比想象中更大更宽容。"</div>
+        <div class="a">// THAILAND · 2024 · 街头的霓虹和温度</div>
+      </div>
+    </div>
+    <div class="world-side reveal">
+      <div class="ws-cell">
+        <img src="images/07-friend-mall.jpg" alt="朋友1">
+        <div class="label">// PEOPLE 01 · 和朋友逛的午后</div>
+      </div>
+      <div class="ws-cell">
+        <img src="images/08-friend-frisbee.jpg" alt="朋友2">
+        <div class="label">// PEOPLE 02 · 一起撒欢的傍晚</div>
+      </div>
+      <div class="ws-cell">
+        <img src="images/09-extra-yiyu.jpg" alt="穿搭">
+        <div class="label">// STYLE 03 · 一起在漫展相遇</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 10 画廊 ============ -->
+<section class="slide" id="s10">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 10 OF 13</div>
+  <div class="slide-tag">// GALLERY · 影像碎片</div>
+
+  <div class="s-header reveal">
+    <h2 class="ch">影像碎片</h2>
+    <div class="en">// SMALL MOMENTS · 一些没被分类的小片刻</div>
+  </div>
+  <div class="gallery-wrap">
+    <div class="g-cell reveal">
+      <span class="tag t-pink">// NO.11</span>
+      <img src="images/03-life-bear.jpg" alt="抱小熊">
+      <div class="cap">我的好朋友一起睡好觉</div>
+    </div>
+    <div class="g-cell reveal">
+      <span class="tag t-purple">// NO.12</span>
+      <img src="images/21-comic-bg.jpg" alt="漫画">
+      <div class="cap">买到喜欢的东西，跟少女心合个影</div>
+    </div>
+    <div class="g-cell reveal">
+      <span class="tag t-cyan">// NO.13</span>
+      <img src="images/16-outdoor-crowd.jpg" alt="户外">
+      <div class="cap">去看演唱会，人潮人涌里挺开心的</div>
+    </div>
+    <div class="g-cell reveal">
+      <span class="tag t-warm">// NO.14</span>
+      <img src="images/18-cap-pout.jpg" alt="嘟嘴">
+      <div class="cap">尼克狐尼克TT</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 10b 作品实证 ============ -->
+<section class="slide" id="s10b">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 11 OF 13</div>
+  <div class="slide-tag">// ACCUMULATION</div>
+
+  <style>
+  .works-grid{
+    max-width:1180px;width:100%;margin:0 auto;
+    display:grid;grid-template-columns:repeat(6,1fr);gap:22px;
+  }
+  .work-card{grid-column:span 2;padding:26px 24px}
+  .work-card.wide{grid-column:span 3}
+  .work-card.full{grid-column:span 6;padding:30px 34px}
+  .work-links{
+    display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;
+  }
+  .work-links .work-link{margin-top:0;}
+  .work-card .wmeta{
+    font-family:'Space Mono',monospace;font-size:11px;
+    color:var(--ink-light);letter-spacing:1.5px;margin-bottom:12px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .work-card .wmeta .k{color:var(--pink-soft)}
+  .work-card .wttl{
+    font-family:'ZCOOL KuaiLe',sans-serif;font-size:21px;
+    color:var(--ink);margin-bottom:10px;
+  }
+  .work-card .wdesc{
+    font-size:14px;color:var(--ink-soft);line-height:1.8;
+  }
+  .work-link{
+    display:inline-flex;align-items:center;gap:8px;margin-top:16px;
+    padding:8px 18px;border-radius:20px;
+    border:1px solid var(--border-pink);
+    color:var(--pink-soft);font-size:13px;text-decoration:none;
+    font-family:'Space Mono','Noto Sans SC',monospace;
+    transition:all 0.3s var(--ease);
+  }
+  .work-link:hover{
+    background:rgba(255,46,126,0.12);
+    box-shadow:0 0 14px rgba(255,46,126,0.3);
+    transform:translateY(-2px);color:var(--pink);
+  }
+  .work-nolink{
+    display:inline-flex;align-items:center;gap:8px;margin-top:16px;
+    font-size:12px;color:var(--ink-light);
+    font-family:'Space Mono','Noto Sans SC',monospace;
+    border:1px dashed var(--border);border-radius:20px;padding:8px 18px;
+  }
+  .works-note{
+    max-width:1180px;margin:26px auto 0;text-align:center;
+    font-family:'Space Mono','Noto Sans SC',monospace;
+    font-size:12px;color:var(--ink-light);letter-spacing:1.5px;
+  }
+  .works-note b{color:var(--pink-soft);font-weight:400}
+  @media(max-width:960px){
+    .works-grid{grid-template-columns:1fr}
+    .work-card,.work-card.wide,.work-card.full{grid-column:span 1}
+  }
+  </style>
+
+  <div class="s-header reveal">
+    <h2 class="ch">我的小积累和四周实训展示墙</h2>
+    <div class="en">// ACCUMULATION × TRAINING · 这四周攒下的一些证据</div>
+  </div>
+  <div class="works-grid">
+    <div class="card work-card reveal">
+      <div class="wmeta"><span class="k">WORK_01</span><span>WEB</span></div>
+      <div class="wttl">AI 时代个人说明书 · 落地页</div>
+      <div class="wdesc">你现在看到的这一页。从自我访谈、文案结构到视觉交互，全程与 AI Agent 协作完成，形成「落地页 + 名片卡 + 飞书文档」三层架构。</div>
+      <a class="work-link" href="https://e1bf67dd191540f4af422e515b69b0e9.app.workbuddy.link" target="_blank">▸ 在线访问</a>
+    </div>
+    <div class="card work-card reveal">
+      <div class="wmeta"><span class="k">WORK_02</span><span>DOC</span></div>
+      <div class="wttl">完整版个人说明书 · 飞书文档</div>
+      <div class="wdesc">落地页背后的完整内容层：自我访谈、任务系统、沟通与反馈偏好全部展开，可以慢慢读的详细版本。</div>
+      <a class="work-link" href="https://acn6c57f7rdq.feishu.cn/docx/Li4fdEuemomXe0xRYm5c5iNbnRg" target="_blank">▸ 阅读文档</a>
+    </div>
+    <div class="card work-card full reveal">
+      <div class="wmeta"><span class="k">WORK_03</span><span>RESEARCH</span></div>
+      <div class="wttl">同类招新内容对比</div>
+      <div class="wdesc">同一框架下的两份对比研究：财会类与采购运营类实习招新。每份选取 5 个真实组织发布的招新帖，从信息颗粒度、可信度两个维度横向分析，配有对比维度表、对比结论与可视化图表，所有原帖链接均实测可打开。财会类覆盖小红书、欢聚时代、滴滴等；采购运营类覆盖小红书、外资（盛思锐）、国企（北方华创）等不同类型组织。</div>
+      <div class="work-links">
+        <a class="work-link" href="https://acn6c57f7rdq.feishu.cn/docx/V0p5dFPCboWn23xbiXicesWvnAg" target="_blank">▸ 财会类 · 查看研究</a>
+        <a class="work-link" href="https://acn6c57f7rdq.feishu.cn/docx/VFAfd6fNtoKS8Kxr65lcrUzHnQh" target="_blank">▸ 采购运营类 · 查看研究</a>
+      </div>
+    </div>
+    <div class="card work-card wide reveal">
+      <div class="wmeta"><span class="k">WORK_05</span><span>LIVE</span></div>
+      <div class="wttl">第 1 周团队汇报 · 汇报人</div>
+      <div class="wdesc">担任团队说明书的汇报人：把小组共创的讲稿用自己的话重新结构化、重新讲述，并负责现场的 5 分钟讲解与 Q&amp;A 应对。</div>
+      <span class="work-nolink">✦ 已完成 · 汇报稿由小组共创，个人重新组织语言讲述</span>
+    </div>
+  </div>
+  <div class="works-note reveal">
+    // 以上全部由 <b>1 + AI</b> 协作完成 · 更多细节见飞书完整文档
+  </div>
+</section>
+
+<!-- ============ Slide 11 角色·技能 ============ -->
+<section class="slide" id="s11">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 12 OF 13</div>
+  <div class="slide-tag">// ROLE × SKILLS · 角色档案</div>
+
+  <div class="s-header reveal">
+    <h2 class="ch">我是这样的一个角色</h2>
+    <div class="en">// CHARACTER PROFILE · 给以后合作的人留下的小档案</div>
+  </div>
+  <div class="skill-container">
+    <div class="skill-stack">
+      <div class="card skill-card reveal">
+        <div class="head">
+          <div class="ic" style="background:rgba(255,46,126,0.12);color:var(--pink)">✦</div>
+          <div class="ttl">AI 工具栈</div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">WorkBuddy</span>
+          <span class="skill-tag">DeepSeek</span>
+          <span class="skill-tag">Hermes Agent</span>
+          <span class="skill-tag">Agent Reach</span>
+          <span class="skill-tag">多模型协作</span>
+        </div>
+      </div>
+      <div class="card skill-card reveal">
+        <div class="head">
+          <div class="ic" style="background:rgba(160,76,255,0.12);color:var(--purple-soft)">✦</div>
+          <div class="ttl">数据分析</div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Excel 公式 + 数据透视表</span>
+          <span class="skill-tag">VBA</span>
+          <span class="skill-tag">Stata · 计量分析</span>
+          <span class="skill-tag">SPSS · 统计分析</span>
+          <span class="skill-tag">Python · pandas / matplotlib</span>
+        </div>
+      </div>
+      <div class="card skill-card reveal">
+        <div class="head">
+          <div class="ic" style="background:rgba(0,240,255,0.1);color:var(--cyan)">✦</div>
+          <div class="ttl">协作 · 内容 · 创作</div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">飞书 · 深度使用</span>
+          <span class="skill-tag">Office 全家桶</span>
+          <span class="skill-tag">文案 / 内容策划</span>
+          <span class="skill-tag">财务管理视角</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="kami-card reveal">
+      <div class="kbd">// CHARACTER PROFILE</div>
+      <div class="hdr">
+        <div class="avatar">
+          <img src="images/23-anime-portrait.png" alt="头像">
+        </div>
+        <div>
+          <div class="nm">张甜湉</div>
+          <div class="sub">Tiantian Zhang · TT</div>
+        </div>
+      </div>
+      <div class="sum">
+        一句话概括自己——<br>
+        <span class="em">"真诚可靠且多元，一个希望成为超级个体的大女孩"</span>
+      </div>
+      <div class="divi"></div>
+      <div class="info">
+        <div>
+          <div class="lbl">// 微信</div>
+          <div class="val">zhangtiantianxyt</div>
+        </div>
+        <div>
+          <div class="lbl">// 邮箱</div>
+          <div class="val">zhangtiantianxyt@163.com</div>
+        </div>
+        <div style="grid-column:1/-1">
+          <div class="lbl">// 当前状态</div>
+          <div class="val">研究生在读 · 1 + AI 工作模式</div>
+        </div>
+      </div>
+      <div class="cmd">
+        <div class="lbl">// HOW TO USE ME</div>
+        <div class="txt">给我一个清晰的目标，一片野蛮生长的土壤，一起撬动更大的愿景</div>
+      </div>
+      <a href="https://acn6c57f7rdq.feishu.cn/docx/Li4fdEuemomXe0xRYm5c5iNbnRg" class="act" target="_blank">
+        ▸ 查看完整说明书
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 12 Footer ============ -->
+<section class="slide" id="s12" style="min-height:80vh">
+  <div class="hud-corners"><i></i><i></i></div>
+  <div class="slide-num">// 13 OF 13</div>
+  <div class="slide-tag">// END OF FILE</div>
+
+  <div class="footer-wrap reveal">
+    <h2 class="ch">谢谢你读到这里</h2>
+    <p>
+      希望这份说明书里有一些能帮到你的部分——<br>
+      不管是合作时的默契，还是日常相处里的小体贴。<br>
+      接下来四周，请多关照。✦
+    </p>
+    <a href="https://acn6c57f7rdq.feishu.cn/docx/Li4fdEuemomXe0xRYm5c5iNbnRg" class="footer-act" target="_blank">
+      ▸ 查看完整飞书文档
+    </a>
+    <div class="footer-meta">
+      // END · TT · 13 SLIDES · v6.1 · SITE EDITION
+    </div>
+  </div>
+</section>
+
+<!-- ============ 背景音乐 · 澎湃 ============ -->
+<audio id="bgm" loop preload="auto" src="audio/澎湃.mp3"></audio>
+
+<!-- 进入遮罩：浏览器禁止有声自动播放，需用户点击手势 -->
+<div class="enter-mask" id="enterMask">
+  <div class="enter-card">
+    <div class="enter-kicker">// TT · 个人说明书</div>
+    <div class="enter-title">欢迎走进我的世界</div>
+    <div class="enter-sub">她心中的星辰大海</div>
+    <button class="enter-btn" id="enterBtn">▶ 进入</button>
+    <div class="enter-hint">进入后可在左上角调节音量 / 暂停</div>
+  </div>
+</div>
+
+<div class="bgm-panel" id="bgmPanel" title="背景音乐开关">
+  <button class="bgm-toggle" id="bgmPlay" title="播放 / 暂停">▶</button>
+  <input class="bgm-vol" id="bgmVol" type="range" min="0" max="100" value="55" aria-label="音量">
+</div>
+
+<!-- ============ 桌面宠物 · VTube 皮套（可走动、可提起） ============ -->
+<img id="pet" class="pet" src="images/vtube-tt.png?v=3" alt="TT 桌面宠物" draggable="false">
+<div id="petHint" class="pet-hint">// 双击暂停 · 拖到任何地方 · 单击出现小表情</div>
+
+<style>
+/* ============ 背景音乐控制（左上角简约） ============ */
+.bgm-panel{position:fixed;top:16px;left:16px;z-index:9999;
+  display:flex;align-items:center;gap:10px;
+  background:rgba(20,12,30,0.55);border:1px solid rgba(255,46,126,0.35);
+  border-radius:30px;padding:6px 12px 6px 7px;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  font-family:'Space Mono','Noto Sans SC',monospace;
+  box-shadow:0 0 18px rgba(255,46,126,0.18);}
+.bgm-toggle{width:30px;height:30px;border-radius:50%;flex:none;
+  background:rgba(255,46,126,0.15);border:1px solid var(--border-pink);
+  color:var(--pink);font-size:13px;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .25s,box-shadow .25s,color .25s,border-color .25s;}
+.bgm-toggle:hover{background:rgba(255,46,126,0.3);box-shadow:0 0 14px rgba(255,46,126,0.45);}
+.bgm-panel.playing .bgm-toggle{background:rgba(0,240,255,0.16);
+  border-color:rgba(0,240,255,0.5);color:var(--cyan);
+  box-shadow:0 0 16px rgba(0,240,255,0.4);}
+.bgm-vol{-webkit-appearance:none;appearance:none;width:64px;height:4px;border-radius:3px;
+  background:linear-gradient(90deg,var(--pink),var(--cyan));outline:none;cursor:pointer;}
+.bgm-vol::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;
+  background:#fff;border:2px solid var(--pink);box-shadow:0 0 8px rgba(255,46,126,0.6);cursor:pointer;}
+.bgm-vol::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:#fff;
+  border:2px solid var(--pink);cursor:pointer;}
+@media(max-width:560px){.bgm-vol{width:48px}.bgm-panel{top:12px;left:12px;padding:5px 10px 5px 6px}}
+
+/* ============ 进入遮罩 ============ */
+.enter-mask{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;
+  background:rgba(11,7,18,0.92);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  opacity:1;transition:opacity .5s ease,visibility .5s ease;}
+.enter-mask.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.enter-card{text-align:center;padding:40px 36px;max-width:340px;
+  border:1px solid var(--border-pink);border-radius:var(--radius);
+  background:rgba(26,18,38,0.7);box-shadow:0 0 40px rgba(255,46,126,0.25);}
+.enter-kicker{font-family:'Space Mono','Noto Sans SC',monospace;color:var(--cyan);font-size:12px;letter-spacing:2px;margin-bottom:14px;}
+.enter-title{font-family:'ZCOOL KuaiLe',cursive;font-size:42px;color:var(--ink);margin-bottom:8px;text-shadow:0 0 18px var(--pink-glow);}
+.enter-sub{color:var(--ink-soft);font-size:14px;margin-bottom:26px;line-height:1.6;}
+.enter-btn{font-family:'ZCOOL KuaiLe',cursive;font-size:20px;color:#fff;cursor:pointer;
+  padding:12px 38px;border-radius:30px;border:1px solid var(--border-pink);
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  box-shadow:0 0 24px rgba(255,46,126,0.45);transition:transform .2s,box-shadow .2s;}
+.enter-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 0 36px rgba(255,46,126,0.65);}
+.enter-hint{margin-top:18px;color:var(--ink-light);font-size:12px;}
+@media(max-width:560px){.enter-title{font-size:34px}.enter-card{padding:32px 24px}}
+
+/* ============ 桌面宠物 · VTube 皮套 ============ */
+.pet{
+  position:fixed;left:50%;bottom:0;
+  width:180px;height:151px;           /* VTube 角色 ~1.19 比例 */
+  z-index:60;                        /* 高于内容、低于 HUD/音乐面板 */
+  pointer-events:auto;
+  cursor:grab;
+  user-select:none;-webkit-user-drag:none;
+  filter:drop-shadow(0 6px 22px rgba(255,46,126,0.35));
+  transition:filter 0.25s var(--ease);
+  display:none;                      /* 引导页关闭前不显示 */
+  touch-action:none;
+  transform-origin:50% 100%;
+}
+.pet.walking{animation:none;}   /* 不点她时平滑移动，不上下跳动 */
+.pet.picked{cursor:grabbing;filter:drop-shadow(0 10px 28px rgba(255,46,126,0.65)) brightness(1.05);}
+.pet.flip{transform:scaleX(-1);}
+.pet.paused .pet-hint{opacity:0;}
+
+.pet-hint{
+  position:fixed;left:50%;bottom:160px;
+  transform:translateX(-50%);
+  padding:5px 14px;border-radius:14px;
+  background:rgba(20,12,30,0.55);
+  border:1px solid rgba(255,46,126,0.35);
+  color:var(--pink-soft);
+  font-family:'Space Mono',monospace;
+  font-size:11px;letter-spacing:1.5px;
+  z-index:60;pointer-events:none;
+  opacity:0;transition:opacity 0.4s;
+  white-space:nowrap;
+}
+.pet-hint.show{opacity:0.95;}
+
+/* 单击特效气泡 */
+.pet-fx{
+  position:fixed;z-index:65;
+  pointer-events:none;
+  font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;
+  font-size:30px;line-height:1;
+  color:var(--pink);
+  text-shadow:0 0 12px rgba(255,46,126,0.5),0 0 4px rgba(0,0,0,0.5);
+  animation:pet-fx-rise 1.4s ease-out forwards;
+}
+@keyframes pet-fx-rise{
+  0%  {opacity:0; transform:translate(-50%,0)    scale(0.5) rotate(-8deg);}
+  20% {opacity:1; transform:translate(-50%,-12px) scale(1.15) rotate(-4deg);}
+  60% {opacity:1; transform:translate(-50%,-40px) scale(1.0) rotate(2deg);}
+  100%{opacity:0; transform:translate(-50%,-70px) scale(0.85) rotate(6deg);}
+}
+
+@media(max-width:560px){.pet{width:120px;height:101px}.pet-hint{bottom:108px}}
+</style>
+
+<script>
+// 进度条
+const pb=document.getElementById('progressBar');
+window.addEventListener('scroll',()=>{
+  const sc=window.scrollY;
+  const max=document.body.scrollHeight-window.innerHeight;
+  pb.style.width=Math.min(100,(sc/max)*100)+'%';
+});
+
+// 导航点跳转
+document.querySelectorAll('.nav-dot').forEach(dot=>{
+  dot.addEventListener('click',()=>{
+    const t=document.getElementById(dot.dataset.target);
+    if(t) t.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// IntersectionObserver 激活导航点 + reveal
+const navDots=document.querySelectorAll('.nav-dot');
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      // 找出当前 slide
+      const sId=e.target.id;
+      if(sId){
+        navDots.forEach(d=>d.classList.toggle('active', d.dataset.target===sId));
+      }
+      if(e.target.classList.contains('reveal')){
+        e.target.classList.add('visible');
+      }
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('.slide').forEach(s=>obs.observe(s));
+reveals.forEach(r=>obs.observe(r));
+
+// ============ 背景音乐 · 澎湃 ============
+(function(){
+  const bgm=document.getElementById('bgm');
+  const panel=document.getElementById('bgmPanel');
+  const playBtn=document.getElementById('bgmPlay');
+  const vol=document.getElementById('bgmVol');
+  const mask=document.getElementById('enterMask');
+  const enterBtn=document.getElementById('enterBtn');
+  let hasFile=true;
+
+  bgm.volume=vol.value/100;
+  function setIcon(p){ playBtn.textContent=p?'⏸':'▶'; panel.classList.toggle('playing',!!p); }
+  function play(){
+    if(!hasFile) return;
+    bgm.play().then(()=>setIcon(true)).catch(()=>{ if(bgm.error) hasFile=false; });
+  }
+  function pause(){ bgm.pause(); setIcon(false); }
+
+  // 切换：基于当前是否暂停，纯粹二选一（修复"暂停后无法续播"）
+  playBtn.addEventListener('click',()=>{ bgm.paused?play():pause(); });
+  vol.addEventListener('input',()=>{ bgm.volume=vol.value/100; });
+
+  // 浏览器禁止有声自动播放，必须有明确的用户点击手势才能播放
+  // 每次打开都展示引导页（不做记忆），点一下即确定有声播放
+  function enter(){
+    mask.classList.add('hide');
+    play();
+  }
+  enterBtn.addEventListener('click',enter);
+  mask.addEventListener('click',(e)=>{ if(e.target===mask) enter(); });
+
+  bgm.addEventListener('error',()=>{ hasFile=false; });
+  setIcon(false);
+})();
+</script>
+
+<!-- ============ 桌面宠物 · 行为脚本 ============ -->
+<script>
+(function(){
+  const pet = document.getElementById('pet');
+  const hint = document.getElementById('petHint');
+  if (!pet) return;
+  const W = () => pet.offsetWidth;
+  const H = () => pet.offsetHeight;
+
+  // 状态
+  let x = 0, y = 0;
+  let anchorX = 0;                     // 当前走动锚点（±60px 范围）
+  let vx = 0.6, dir = 1;
+  let picked = false, paused = false;
+  let offX = 0, offY = 0;
+  let lastT = 0;
+  let hintShown = false;
+  let lastClickT = 0;                  // 单/双击消歧
+
+  // 特效气泡池
+  const FX = ['♥','✦','♪','☆','✿','!','☀','☾','~','Meow!','喵~','Hi!','💕'];
+
+  function place(xx, yy){
+    pet.style.left = xx + 'px';
+    pet.style.top  = yy + 'px';
+  }
+  function flipDir(d){
+    dir = d;
+    pet.classList.toggle('flip', d < 0);
+  }
+  function setPaused(p){
+    paused = p;
+    pet.classList.toggle('paused', p);
+    if (p) pet.classList.remove('walking');
+    else pet.classList.add('walking');
+  }
+  function showFx(){
+    const txt = FX[Math.floor(Math.random()*FX.length)];
+    const el = document.createElement('div');
+    el.className = 'pet-fx';
+    el.textContent = txt;
+    el.style.left = (x + W()/2) + 'px';
+    el.style.top  = (y - 8) + 'px';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 1500);
+  }
+
+  function tick(t){
+    if (!lastT) lastT = t;
+    const dt = Math.min(40, t - lastT);
+    lastT = t;
+    if (!picked && !paused){
+      x += vx * dir * (dt/16);
+      // 锚点 ±60px 范围内来回走
+      if (x < anchorX - 60){ x = anchorX - 60; flipDir(1); }
+      else if (x > anchorX + 60){ x = anchorX + 60; flipDir(-1); }
+      place(x, y);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function showPet(){
+    pet.style.display = 'block';
+    x = Math.max(60, window.innerWidth/2 - W()/2);
+    y = window.innerHeight - H();
+    anchorX = x;
+    place(x, y);
+    flipDir(Math.random() < 0.5 ? -1 : 1);
+    if (!paused) pet.classList.add('walking');
+    if (!hintShown){
+      hint.classList.add('show');
+      setTimeout(()=>hint.classList.remove('show'), 3800);
+      hintShown = true;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // 拖动：pointer events
+  pet.addEventListener('pointerdown', (e)=>{
+    picked = true;
+    pet.classList.remove('walking');
+    pet.classList.add('picked');
+    const r = pet.getBoundingClientRect();
+    offX = e.clientX - r.left; offY = e.clientY - r.top;
+    try { pet.setPointerCapture(e.pointerId); } catch(_){}
+  });
+  pet.addEventListener('pointermove', (e)=>{
+    if (!picked) return;
+    x = e.clientX - offX;
+    y = e.clientY - offY;
+    x = Math.max(0, Math.min(window.innerWidth - W(), x));
+    y = Math.max(0, Math.min(window.innerHeight - H(), y));
+    place(x, y);
+  });
+  function drop(e){
+    if (!picked) return;
+    picked = false;
+    pet.classList.remove('picked');
+    // 落地：snap 到视口底部
+    y = window.innerHeight - H();
+    place(x, y);
+    // 新锚点 = 当前位置（让她在新位置继续来回走）
+    anchorX = Math.max(60, Math.min(window.innerWidth - W() - 60, x));
+    flipDir(Math.random() < 0.5 ? -1 : 1);
+    vx = 0.4 + Math.random() * 0.4;
+    if (!paused) pet.classList.add('walking');
+  }
+  pet.addEventListener('pointerup', drop);
+  pet.addEventListener('pointercancel', drop);
+
+  // 单/双击：用时间窗消歧（300ms 内两次 = 双击）
+  function onClickLike(e){
+    if (picked) return;
+    const now = Date.now();
+    if (now - lastClickT < 300){
+      // 双击：切换暂停
+      lastClickT = 0;
+      setPaused(!paused);
+      return;
+    }
+    lastClickT = now;
+    // 延后判断：是单击还是双击的开始
+    setTimeout(()=>{
+      if (lastClickT && Date.now() - lastClickT >= 280){
+        showFx();
+        lastClickT = 0;
+      }
+    }, 310);
+  }
+  pet.addEventListener('click', onClickLike);
+
+  // 引导页关闭后启动宠物
+  document.getElementById('enterBtn').addEventListener('click', showPet, { once: true });
+  setTimeout(()=>{ if (pet.style.display !== 'block') showPet(); }, 1500);
+})();
+</script>
+
+<!-- 访问统计上报：极轻量，默认关闭（ENDPOINT 为空时不发请求）。
+     把 ENDPOINT 改成统计收集器的公网地址（如 https://你的统计域名/track）即启用，
+     真实访客就会被记录到 stats/server.js 的后台里。不改动任何页面视觉。 -->
+<script>
+(function(){
+  var ENDPOINT = '';
+  if (!ENDPOINT) return;
+  try {
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: location.pathname, ref: document.referrer, title: document.title }),
+      keepalive: true
+    });
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

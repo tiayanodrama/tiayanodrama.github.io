@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro'
 ---
-<Layout title="作品 · 张甜湉" description="简历×岗位匹配实验、实习招新对比研究、求职面试 AI 工作流、个人说明书交互落地页。">
+<Layout title="作品 · 张甜湉" description="简历×岗位匹配实验：粘贴 JD + 两份简历，自动算匹配度。">
   <div class="page">
     <div class="page-head">
       <p class="page-kicker mono">WORKS · FLAGSHIP CASE + GALLERY</p>
@@ -9,57 +9,103 @@ import Layout from '../layouts/Layout.astro'
       <p class="page-lead">几件能代表我怎么思考、怎么做事的东西——方法、研究，和一件自己做的网页。</p>
     </div>
 
-    <!-- ── 旗舰案例：72% vs 55% 交互演示 ────────────────────── -->
+    <!-- ── 旗舰案例：可跑的简历 × JD 匹配实验台 ────────────────── -->
     <div class="block">
-      <h2>旗舰案例 · 简历 × 岗位匹配实验</h2>
+      <h2>旗舰案例 · 简历 × 岗位匹配实验台</h2>
       <div class="hud hud-flagship">
         <div class="flagship-head">
-          <span class="mono fh-tag">// CASE 001 · FLAGSHIP</span>
-          <span class="mono fh-stat">同一份 JD · 两份定位不同的简历 · 各跑一遍</span>
+          <span class="mono fh-tag">// CASE 001 · FLAGSHIP · LIVE</span>
+          <span class="mono fh-stat">粘贴 JD + 两份简历 → 自动跑匹配 · 实时出分</span>
         </div>
         <p class="flagship-lead">
-          同一份岗位 JD，我用自己的两份定位不同的简历各跑了一遍匹配度：<strong>一份 72%，一份 55%</strong>。
+          把 <strong>岗位 JD</strong> 和两份定位不同的简历贴进来，<strong>点 RUN</strong>。终端会跑出关键词提取 / 双向覆盖 / 双份对比的过程，最后给两份匹配度。<strong>同一份人，两种材料呈现，分数会差多少——这是这个实验台想让你看到的事。</strong>
         </p>
 
-        <div class="vs-stage">
-          <button class="vs-card vs-card-a active" data-side="a" aria-label="查看运营向策略">
-            <span class="vc-label mono">RESUME A · 运营 / 内容向</span>
-            <div class="vc-num num-display glow-pink" data-num="72">0</div>
-            <span class="vc-cap mono">JOB FIT · PERCENT</span>
-            <div class="vc-meta">
-              <span class="tag tag-warm">关键词命中</span>
-              <span class="tag">+17 pts</span>
-            </div>
-          </button>
-
-          <div class="vs-mid">
-            <span class="vs-delta mono glow-warm">−17 pts</span>
-            <span class="vs-sub mono">same person · different framing</span>
-            <button class="btn btn-cyan" id="playBtn">▶ 再跑一次</button>
+        <!-- 输入面板 -->
+        <div class="lab-input">
+          <div class="lab-row">
+            <label class="lab-label mono">// JD</label>
+            <textarea id="jdText" class="lab-ta" rows="4" placeholder="岗位 JD 文本..."></textarea>
           </div>
-
-          <button class="vs-card vs-card-b" data-side="b" aria-label="查看审计向策略">
-            <span class="vc-label mono">RESUME B · 财务 / 审计向</span>
-            <div class="vc-num num-display" data-num="55" style="color:var(--ink-soft);text-shadow:0 0 14px rgba(183,171,196,.35)">0</div>
-            <span class="vc-cap mono">JOB FIT · PERCENT</span>
-            <div class="vc-meta">
-              <span class="tag tag-cyan">关键词未命中</span>
-              <span class="tag">基准</span>
+          <div class="lab-row2">
+            <div class="lab-cell">
+              <label class="lab-label mono">// RESUME A</label>
+              <textarea id="resumeA" class="lab-ta" rows="6" placeholder="简历 A 文本..."></textarea>
             </div>
-          </button>
+            <div class="lab-cell">
+              <label class="lab-label mono">// RESUME B</label>
+              <textarea id="resumeB" class="lab-ta" rows="6" placeholder="简历 B 文本..."></textarea>
+            </div>
+          </div>
+          <div class="lab-actions">
+            <button class="btn btn-pink" id="runBtn">▶ RUN 跑一次</button>
+            <button class="btn btn-ghost" id="fillSampleBtn">↻ 载入示例</button>
+            <button class="btn btn-ghost" id="clearBtn">⌫ 清空</button>
+            <span class="lab-hint mono">// 用浏览器跑，不上传</span>
+          </div>
         </div>
 
-        <div class="flagship-insight" id="insight">
-          <div class="insight-head">
-            <span class="mono ih-tag" id="ihTag">// STRATEGY · RESUME A</span>
+        <!-- 终端输出 -->
+        <div class="terminal" id="terminal">
+          <div class="term-head">
+            <span class="term-dot dot-r"></span>
+            <span class="term-dot dot-y"></span>
+            <span class="term-dot dot-g"></span>
+            <span class="term-title mono">tt-skill:job-fit · v1.0</span>
           </div>
-          <div class="insight-body" id="ihBody">
-            <strong>关键词重定向：</strong>从财务术语切到运营术语（DAU、留存、内容运营），匹配项从 11 项跃升到 21 项；同时把项目描述顺序按"用户增长 → 数据驱动 → 跨部门协作"重新排列。
+          <div class="term-body" id="termBody">
+            <div class="term-line dim"># 等待 RUN …（把 JD 和两份简历粘贴到上方输入框）</div>
+          </div>
+        </div>
+
+        <!-- 结果条 -->
+        <div class="vs-stage" id="vsStage" style="display:none">
+          <div class="vs-card vs-card-a">
+            <span class="vc-label mono">RESUME A</span>
+            <div class="vc-num num-display glow-pink" id="scoreA">0</div>
+            <span class="vc-cap mono">JOB FIT %</span>
+            <div class="vc-meta">
+              <span class="tag tag-warm">命中 <span id="hitA">0</span> 词</span>
+              <span class="tag">覆盖 <span id="covA">0</span>%</span>
+            </div>
+          </div>
+          <div class="vs-mid">
+            <span class="vs-delta mono glow-warm" id="deltaLabel">—</span>
+            <span class="vs-sub mono">same person · different framing</span>
+          </div>
+          <div class="vs-card vs-card-b">
+            <span class="vc-label mono">RESUME B</span>
+            <div class="vc-num num-display" id="scoreB" style="color:var(--ink-soft);text-shadow:0 0 14px rgba(183,171,196,.35)">0</div>
+            <span class="vc-cap mono">JOB FIT %</span>
+            <div class="vc-meta">
+              <span class="tag tag-cyan">命中 <span id="hitB">0</span> 词</span>
+              <span class="tag">覆盖 <span id="covB">0</span>%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 关键词对比 -->
+        <div class="kw-compare" id="kwCompare" style="display:none">
+          <div class="kw-block">
+            <span class="kw-label mono">// A 命中关键词</span>
+            <div class="kw-tags" id="kwA"></div>
+          </div>
+          <div class="kw-block">
+            <span class="kw-label mono">// A 缺失关键词</span>
+            <div class="kw-tags" id="kwMissA"></div>
+          </div>
+          <div class="kw-block">
+            <span class="kw-label mono">// B 命中关键词</span>
+            <div class="kw-tags" id="kwB"></div>
+          </div>
+          <div class="kw-block">
+            <span class="kw-label mono">// B 缺失关键词</span>
+            <div class="kw-tags" id="kwMissB"></div>
           </div>
         </div>
 
         <div class="quote flagship-quote">
-          <strong>人没变，能力没变，只是材料呈现变了——匹配度就差了 17 个点。</strong>
+          <strong>人没变，能力没变，只是材料呈现变了——匹配度就可能差一截。</strong>
           这件事逼我看见第一遍看不见的东西：<strong>拿到面试的是"材料呈现"，不是"真实能力"；而两者的差值，才是最该处理的清单。</strong>
         </div>
       </div>
@@ -174,68 +220,212 @@ import Layout from '../layouts/Layout.astro'
 
   </div>
 
-  <!-- 72/55 交互脚本 -->
+  <!-- 简历×JD 匹配实验台 · 算法 + 打字机输出 -->
   <script>
-    const insights = {
-      a: {
-        tag: '// STRATEGY · RESUME A',
-        body: '<strong>关键词重定向：</strong>从财务术语切到运营术语（DAU、留存、内容运营），匹配项从 11 项跃升到 21 项；同时把项目描述顺序按"用户增长 → 数据驱动 → 跨部门协作"重新排列，让第一页就能命中 JD 的高频动作。',
-      },
-      b: {
-        tag: '// STRATEGY · RESUME B',
-        body: '<strong>保留原样投递：</strong>这份简历用的是财务审计关键词（函证、监盘、抽盘、底稿），针对的是财会岗位——而这份运营 JD 与这些词的交集天然较低，于是匹配度停在 55%。<strong>这不是简历"错"，而是定位"错"</strong>——同一份内容换一个 JD 又会变成高分。',
-      },
-    };
-
-    const els = {
-      cards: document.querySelectorAll('.vs-card'),
-      insightTag: document.getElementById('ihTag'),
-      insightBody: document.getElementById('ihBody'),
-      btn: document.getElementById('playBtn'),
-      nums: document.querySelectorAll('.vc-num'),
-    };
-
-    function setActive(side){
-      els.cards.forEach(c => c.classList.toggle('active', c.dataset.side === side));
-      els.insightTag.textContent = insights[side].tag;
-      els.insightBody.innerHTML = insights[side].body;
-      animateNums(side);
+    // ── 工具函数 ──────────────────────────────────────────────
+    const STOP = new Set('的 了 和 与 或 是 在 把 被 也 还 但 而 及 对 为 就 这 那 我 你 他 她 它 我们 他们 之 于 以 来 到 没 有 但 因 与 其 所 各 由'.split(/\s+/));
+    function tokenize(text){
+      if(!text) return [];
+      const t = String(text).toLowerCase();
+      const out = [];
+      // 英文/数字 token
+      const en = t.match(/[a-z0-9]+/g) || [];
+      out.push(...en.filter(w => w.length>=2 && !STOP.has(w)));
+      // 中文：先按标点切，再做 bigram + 2/3字词
+      const zhParts = t.split(/[\s,，。.、；;：:！!？?\(\)\[\]\{\}【】《》·\/\\\n\t\r"'`~@#$%^&*+=|]/g).filter(Boolean);
+      for(const seg of zhParts){
+        // 中文字符
+        const m = seg.match(/[\u4e00-\u9fff]+/g);
+        if(!m) continue;
+        for(const s of m){
+          // 2字 + 3字词
+          if(s.length>=2){
+            for(let i=0;i<s.length-1;i++) out.push(s.substr(i,2));
+          }
+          if(s.length>=3){
+            for(let i=0;i<s.length-2;i++) out.push(s.substr(i,3));
+          }
+        }
+      }
+      return out.filter(w => !STOP.has(w));
+    }
+    function countFreq(tokens){
+      const m = new Map();
+      for(const t of tokens) m.set(t,(m.get(t)||0)+1);
+      return m;
+    }
+    function extractKeywords(text, topN=20){
+      const freq = countFreq(tokenize(text));
+      return [...freq.entries()].sort((a,b)=>b[1]-a[1]).slice(0,topN).map(([w,c])=>({w,c}));
+    }
+    function jaccard(a,b){
+      const A=new Set(a),B=new Set(b);
+      let inter=0; A.forEach(x=>{ if(B.has(x)) inter++; });
+      const u = new Set([...A,...B]).size;
+      return u ? inter/u : 0;
+    }
+    function coverage(jdSet, resumeSet){
+      let hit=0; jdSet.forEach(x=>{ if(resumeSet.has(x)) hit++; });
+      return jdSet.size ? hit/jdSet.size : 0;
     }
 
-    function animateNums(activeSide){
-      els.nums.forEach(n => {
-        const target = +n.dataset.num;
-        const isActive = n.closest('.vs-card').dataset.side === activeSide;
-        n.style.opacity = '1';
-        if (!isActive){
-          n.style.opacity = '0.55';
-        }
-        let cur = 0;
-        const start = performance.now();
-        const dur = 1100;
-        const from = 0;
-        const tick = (t) => {
-          const p = Math.min(1, (t - start) / dur);
-          const eased = 1 - Math.pow(1 - p, 3);
-          cur = from + (target - from) * eased;
-          n.textContent = Math.round(cur);
-          if (p < 1) requestAnimationFrame(tick);
-          else n.textContent = target;
-        };
-        requestAnimationFrame(tick);
+    // ── 评分：基础覆盖率 + 词频权重 + 高频词加权 ──────────────
+    function scoreJD(jdText, resumeText){
+      const jdKw = extractKeywords(jdText, 25);
+      const reKw = extractKeywords(resumeText, 60);
+      const jdSet = new Set(jdKw.map(x=>x.w));
+      const reSet = new Set(reKw.map(x=>x.w));
+      // 命中率 = 命中数 / jd 关键词数
+      const hit = [];
+      const miss = [];
+      jdKw.forEach(({w,c})=>{
+        if(reSet.has(w)) hit.push({w,c});
+        else miss.push({w,c});
+      });
+      // 权重：高频 × 1.5, 低频 × 1.0; 总权重归一
+      let totalW = 0, hitW = 0;
+      jdKw.forEach(({c})=>{
+        const w = c>=3 ? 1.5 : 1.0;
+        totalW += w;
+      });
+      hit.forEach(({c})=>{ hitW += (c>=3?1.5:1.0); });
+      const pct = totalW ? Math.round(hitW/totalW*100) : 0;
+      return { pct, hit, miss, jdKw, reKw, coverage: jdSet.size ? Math.round(hit.length/jdSet.size*100) : 0 };
+    }
+
+    // ── 终端打字机 ──────────────────────────────────────────
+    const term = document.getElementById('termBody');
+    function termReset(){ term.innerHTML=''; }
+    function termLine(text, cls='info', delay=60){
+      return new Promise(r=>{
+        setTimeout(()=>{
+          const div = document.createElement('div');
+          div.className = 'term-line '+cls;
+          div.textContent = text;
+          term.appendChild(div);
+          term.scrollTop = term.scrollHeight;
+          r();
+        }, delay);
       });
     }
+    async function termType(text, cls='info', charDelay=18){
+      const div = document.createElement('div');
+      div.className = 'term-line '+cls;
+      term.appendChild(div);
+      term.scrollTop = term.scrollHeight;
+      for(let i=0;i<text.length;i++){
+        div.textContent += text[i];
+        if(i%3===0) term.scrollTop = term.scrollHeight;
+        await new Promise(r=>setTimeout(r, charDelay));
+      }
+      return div;
+    }
 
-    els.cards.forEach(c => c.addEventListener('click', () => setActive(c.dataset.side)));
-    els.btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      // 来回切换两侧，重跑
-      const cur = document.querySelector('.vs-card.active').dataset.side;
-      setActive(cur === 'a' ? 'b' : 'a');
+    // ── 主流程 ─────────────────────────────────────────────
+    async function runLab(){
+      const jd = document.getElementById('jdText').value.trim();
+      const ra = document.getElementById('resumeA').value.trim();
+      const rb = document.getElementById('resumeB').value.trim();
+      if(!jd || !ra || !rb){
+        await termLine('⚠ 输入不完整，需要 JD + 简历 A + 简历 B 三段文本。','warn',0);
+        return;
+      }
+      termReset();
+      document.getElementById('vsStage').style.display='none';
+      document.getElementById('kwCompare').style.display='none';
+      await termLine('▶ START 简历×JD 匹配实验 …','info',0);
+      await termLine(`  JD 字符: ${jd.length}  简历A 字符: ${ra.length}  简历B 字符: ${rb.length}`,'dim',120);
+      await termLine('  [1/4] 提取 JD 关键词 …','info',200);
+      const jdKw = extractKeywords(jd, 25);
+      await termLine(`  ✓ 提取到 ${jdKw.length} 个关键词（前 10）：${jdKw.slice(0,10).map(x=>x.w+'×'+x.c).join(' / ')}`,'pass',180);
+      await termLine('  [2/4] 计算 RESUME A …','info',200);
+      const rA = scoreJD(jd, ra);
+      await termLine(`  ✓ A 命中 ${rA.hit.length}/${jdKw.length}，覆盖率 ${rA.coverage}% 加权得分 ${rA.pct}`,'pass',220);
+      await termLine('  [3/4] 计算 RESUME B …','info',200);
+      const rB = scoreJD(jd, rb);
+      await termLine(`  ✓ B 命中 ${rB.hit.length}/${jdKw.length}，覆盖率 ${rB.coverage}% 加权得分 ${rB.pct}`,'pass',220);
+      await termLine('  [4/4] 双份差值 …','info',200);
+      const delta = rA.pct - rB.pct;
+      await termLine(`  ✓ Δ = ${delta>0?'+':''}${delta} pts（${delta>0?'A 更贴合 JD':delta<0?'B 更贴合 JD':'两份相同'})`,'pass',180);
+      await termLine('▶ DONE','info',220);
+
+      // 渲染结果条（数字动画）
+      document.getElementById('vsStage').style.display='';
+      animateScore('scoreA', rA.pct);
+      animateScore('scoreB', rB.pct);
+      document.getElementById('hitA').textContent = rA.hit.length;
+      document.getElementById('hitB').textContent = rB.hit.length;
+      document.getElementById('covA').textContent = rA.coverage;
+      document.getElementById('covB').textContent = rB.coverage;
+      const dl = document.getElementById('deltaLabel');
+      dl.textContent = (delta>0?'+':'') + delta + ' pts';
+      dl.style.color = delta>0 ? 'var(--pink)' : (delta<0?'var(--purple)':'var(--ink-soft)');
+
+      // 关键词清单
+      document.getElementById('kwCompare').style.display='';
+      renderKw('kwA', rA.hit.map(x=>x.w), 'pink');
+      renderKw('kwMissA', rA.miss.map(x=>x.w), 'miss');
+      renderKw('kwB', rB.hit.map(x=>x.w), 'cyan');
+      renderKw('kwMissB', rB.miss.map(x=>x.w), 'miss');
+    }
+    function animateScore(id, target){
+      const el = document.getElementById(id);
+      const start = performance.now(); const dur=1100;
+      const tick = (t)=>{
+        const p = Math.min(1, (t-start)/dur);
+        const e = 1-Math.pow(1-p,3);
+        el.textContent = Math.round(target*e);
+        if(p<1) requestAnimationFrame(tick); else el.textContent = target;
+      };
+      requestAnimationFrame(tick);
+    }
+    function renderKw(id, words, kind){
+      const box = document.getElementById(id);
+      box.innerHTML='';
+      words.forEach(w=>{
+        const span = document.createElement('span');
+        span.className = 'kw-tag '+(kind==='miss'?'kw-miss':(kind==='pink'?'kw-pink':'kw-cyan'));
+        span.textContent = w;
+        box.appendChild(span);
+      });
+      if(!words.length){
+        const span = document.createElement('span');
+        span.className = 'kw-empty';
+        span.textContent = '— 无 —';
+        box.appendChild(span);
+      }
+    }
+
+    // ── 示例数据（贴合真实场景） ─────────────────────────────
+    const SAMPLE = {
+      jd: `岗位：内容运营实习生\n\n岗位职责：\n1. 负责公众号/小红书日常内容运营，包括选题策划、文案撰写、排版与发布；\n2. 跟进用户增长指标（DAU、留存、转化），配合活动策划提升用户活跃；\n3. 收集整理用户反馈与运营数据，输出周报月报，用数据驱动内容优化；\n4. 跨部门协作，与产品、设计、市场协同推进内容项目落地。\n\n任职要求：\n- 文案能力强，文字有感染力；\n- 熟悉主流社交平台（小红书/抖音/B站）运营玩法；\n- 数据敏感，能用数据驱动决策；\n- 加分：英语流利、有个人公众号/自媒体运营经验。`,
+      a: `张甜湉 · 内容运营向简历\n\n教育：财务管理硕士在读\n\n经历：\n- 校园公众号主笔，年度阅读量 10w+，策划"考研故事"系列内容，单篇最高 1.2w 阅读；\n- 小红书账号运营 6 个月，定位"审计实习日记"，粉丝从 0 到 2400，多篇笔记进入同城榜；\n- 参与品牌活动策划组，负责文案与现场执行，活动期间用户活跃提升 18%；\n- 跨部门协作：与产品/设计/市场联动完成 3 个内容项目，平均周更 4 篇；\n- 数据驱动：用 Excel + VBA 自动化处理 3000+ 条用户数据，输出周报。\n\n技能：文案 / 排版 / 公众号 / 小红书 / Excel / 数据分析 / 跨部门协作。`,
+      b: `张甜湉 · 财务审计向简历\n\n教育：财务管理硕士在读\n\n经历：\n- 中审众环实习：独立执行函证程序 500 余份，参与存货监盘 1000 项，编写底稿；\n- 清华兰考项目：作为核心成员完成银行流水核查、信用报告交叉比对；\n- 武汉光至科技：负责应收应付月结、金蝶系统操作、月度财报编制；\n- 北大深圳：开发 VBA 自动化模型处理 3000+ 条凭证数据。\n\n技能：函证 / 监盘 / 抽盘 / 底稿 / 银行流水核查 / 金蝶 / VBA / Excel / 财务分析。`
+    };
+    function loadSample(){
+      document.getElementById('jdText').value = SAMPLE.jd;
+      document.getElementById('resumeA').value = SAMPLE.a;
+      document.getElementById('resumeB').value = SAMPLE.b;
+    }
+    function clearAll(){
+      document.getElementById('jdText').value='';
+      document.getElementById('resumeA').value='';
+      document.getElementById('resumeB').value='';
+      termReset();
+      document.getElementById('termBody').innerHTML='<div class="term-line dim"># 已清空 · 等待 RUN …</div>';
+      document.getElementById('vsStage').style.display='none';
+      document.getElementById('kwCompare').style.display='none';
+    }
+
+    // ── 事件绑定 ─────────────────────────────────────────────
+    document.getElementById('runBtn').addEventListener('click', runLab);
+    document.getElementById('fillSampleBtn').addEventListener('click', loadSample);
+    document.getElementById('clearBtn').addEventListener('click', clearAll);
+    // 首次加载预填示例 + 自动 RUN 一次
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSample();
+      setTimeout(runLab, 500);
     });
-
-    // 首次加载默认动画
-    setTimeout(() => setActive('a'), 300);
   </script>
 </Layout>
 
@@ -246,6 +436,76 @@ import Layout from '../layouts/Layout.astro'
 .flagship-lead{font-size:15px;color:var(--ink-soft);line-height:1.9;margin-bottom:20px}
 .flagship-lead strong{color:var(--pink-soft)}
 
+/* ── 实验台输入面板 ─────────────────────────────────────── */
+.lab-input{
+  padding:18px;
+  background:rgba(0,0,0,.28);
+  border:1px solid var(--rule);
+  border-radius:10px;
+  margin-bottom:18px;
+  display:flex;flex-direction:column;gap:14px;
+}
+.lab-row{display:flex;flex-direction:column;gap:6px}
+.lab-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.lab-cell{display:flex;flex-direction:column;gap:6px}
+.lab-label{font-size:10px;color:var(--cyan);letter-spacing:2px;text-shadow:var(--glow-cyan)}
+.lab-ta{
+  width:100%;
+  background:rgba(10,8,20,.55);
+  border:1px solid var(--rule-2);
+  border-radius:8px;
+  color:var(--ink);
+  font-family:var(--f-cn);
+  font-size:13px;line-height:1.7;
+  padding:10px 12px;
+  resize:vertical;
+  transition:border-color .2s, box-shadow .2s;
+}
+.lab-ta::placeholder{color:var(--ink-light);opacity:.7}
+.lab-ta:focus{
+  outline:none;
+  border-color:var(--pink);
+  box-shadow:0 0 0 1px rgba(255,77,141,.35),0 0 18px rgba(255,77,141,.15);
+}
+.lab-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lab-hint{font-size:11px;color:var(--ink-light);letter-spacing:1px;margin-left:auto}
+
+/* ── 终端窗口 ───────────────────────────────────────────── */
+.terminal{
+  border:1px solid var(--rule-2);
+  border-radius:10px;
+  overflow:hidden;
+  background:linear-gradient(180deg,rgba(12,10,26,.92),rgba(6,5,16,.96));
+  box-shadow:0 10px 34px rgba(0,0,0,.4);
+  margin-bottom:18px;
+}
+.term-head{
+  display:flex;align-items:center;gap:7px;
+  padding:9px 14px;
+  background:rgba(255,255,255,.04);
+  border-bottom:1px solid var(--rule-2);
+}
+.term-dot{width:11px;height:11px;border-radius:50%;flex:none}
+.dot-r{background:#FF5F57;box-shadow:0 0 8px rgba(255,95,87,.6)}
+.dot-y{background:#FEBC2E;box-shadow:0 0 8px rgba(254,188,46,.6)}
+.dot-g{background:#28C840;box-shadow:0 0 8px rgba(40,200,64,.6)}
+.term-title{font-size:11px;color:var(--ink-light);letter-spacing:1.5px;margin-left:6px}
+.term-body{
+  padding:14px 16px;
+  min-height:150px;max-height:320px;
+  overflow-y:auto;
+  font-family:var(--f-mono);
+  font-size:12.5px;line-height:1.95;
+}
+.term-body::-webkit-scrollbar{width:8px}
+.term-body::-webkit-scrollbar-thumb{background:var(--rule-2);border-radius:4px}
+.term-line{color:var(--ink-soft);white-space:pre-wrap;word-break:break-all}
+.term-line.info{color:var(--cyan)}
+.term-line.pass{color:#9BE8B4}
+.term-line.dim{color:var(--ink-light)}
+.term-line.warn{color:var(--warm)}
+
+/* ── 结果条 ─────────────────────────────────────────────── */
 .vs-stage{
   display:grid;grid-template-columns:1fr auto 1fr;gap:18px;
   align-items:center;margin:22px 0;
@@ -255,16 +515,9 @@ import Layout from '../layouts/Layout.astro'
   padding:26px 18px;
   background:linear-gradient(180deg,rgba(255,77,141,.05),rgba(255,77,141,.01));
   border:1px solid var(--rule);border-radius:10px;
-  cursor:pointer;transition:all .25s;
   text-align:center;
 }
-.vs-card:hover{transform:translateY(-3px);border-color:var(--pink);box-shadow:0 8px 26px rgba(255,77,141,.18)}
 .vs-card-b{background:linear-gradient(180deg,rgba(160,76,255,.04),rgba(255,255,255,.01))}
-.vs-card-b:hover{border-color:var(--purple);box-shadow:0 8px 26px rgba(160,76,255,.18)}
-.vs-card.active{
-  border-color:var(--pink);box-shadow:var(--glow-pink);
-  background:linear-gradient(180deg,rgba(255,77,141,.12),rgba(255,77,141,.02));
-}
 .vc-label{font-size:11px;color:var(--ink-light);letter-spacing:1.5px}
 .vc-num{
   font-size:78px;line-height:1;font-weight:700;
@@ -285,15 +538,44 @@ import Layout from '../layouts/Layout.astro'
 }
 .vs-sub{font-size:10px;color:var(--ink-light);letter-spacing:1.5px}
 
-.flagship-insight{
-  margin-top:14px;padding:14px 16px;
-  background:rgba(0,0,0,.3);border:1px dashed var(--rule-2);
-  border-radius:8px;
+/* ── 关键词对比清单 ─────────────────────────────────────── */
+.kw-compare{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  margin-bottom:18px;
 }
-.insight-head{margin-bottom:6px}
-.ih-tag{font-size:10px;color:var(--cyan);letter-spacing:2px;text-shadow:var(--glow-cyan)}
-.insight-body{font-size:14px;color:var(--ink-soft);line-height:1.85}
-.insight-body strong{color:var(--pink-soft)}
+.kw-block{
+  padding:14px 16px;
+  background:rgba(0,0,0,.28);
+  border:1px solid var(--rule);
+  border-radius:10px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.kw-label{font-size:10px;color:var(--ink-light);letter-spacing:2px}
+.kw-tags{display:flex;gap:5px;flex-wrap:wrap}
+.kw-tag{
+  font-size:12px;
+  padding:3px 9px;
+  border-radius:99px;
+  border:1px solid transparent;
+}
+.kw-pink{
+  color:var(--pink-soft);
+  border-color:rgba(255,77,141,.45);
+  background:rgba(255,77,141,.08);
+}
+.kw-cyan{
+  color:var(--cyan-soft,var(--cyan));
+  border-color:rgba(33,230,193,.4);
+  background:rgba(33,230,193,.07);
+}
+.kw-miss{
+  color:var(--ink-light);
+  border-color:var(--rule-2);
+  background:rgba(255,255,255,.02);
+  text-decoration:line-through;
+  text-decoration-color:rgba(255,95,87,.55);
+}
+.kw-empty{font-size:12px;color:var(--ink-light);font-family:var(--f-mono)}
 
 .flagship-quote{margin-top:18px}
 
@@ -355,9 +637,12 @@ import Layout from '../layouts/Layout.astro'
   .vs-stage{grid-template-columns:1fr;gap:18px}
   .vs-mid{order:2}
   .achv-grid{grid-template-columns:repeat(2,1fr)}
+  .lab-row2{grid-template-columns:1fr}
+  .kw-compare{grid-template-columns:1fr}
 }
 @media(max-width:520px){
   .vc-num{font-size:62px}
   .achv-grid{grid-template-columns:1fr}
+  .lab-hint{margin-left:0;width:100%}
 }
 </style>

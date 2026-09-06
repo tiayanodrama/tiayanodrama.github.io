@@ -3,7 +3,8 @@ const links = [
   { href: '/', label: 'HOME', cn: '首页' },
   { href: '/about', label: 'ABOUT', cn: '关于我' },
   { href: '/works', label: 'WORKS', cn: '作品' },
-  { href: '/method', label: 'METHOD', cn: 'AI 协作方法论' },
+  { href: '/method', label: 'METHOD', cn: '方法论' },
+  { href: '/manual', label: 'MANUAL', cn: '说明书' },
   { href: '/contact', label: 'CONTACT', cn: '联系' },
 ]
 const path = Astro.url.pathname
@@ -12,7 +13,7 @@ const path = Astro.url.pathname
   <a class="brand" href="/">
     <span class="brand-mark">TT</span>
     <span class="brand-sep">/</span>
-    <span class="brand-name">张甜湉</span>
+    <span class="brand-name cn">ZHANG TIANTIAN</span>
   </a>
   <nav class="nav-links">
     {links.map(l => (
@@ -43,7 +44,7 @@ const path = Astro.url.pathname
   text-shadow:var(--glow-pink);
 }
 .brand-sep{color:var(--ink-light);font-family:var(--f-mono);font-size:18px}
-.brand-name{font-family:var(--f-display);font-size:17px;color:var(--ink)}
+.brand-name{font-family:var(--f-mono);font-size:13px;color:var(--ink-soft);letter-spacing:3px;font-weight:700}
 
 .nav-links{display:flex;gap:6px}
 .nav-link{
